@@ -14,6 +14,9 @@
         /// <returns>List<string></returns>
         public List<string> GetFiles() => Stocks;
 
-        public abstract void ReadXMLFiles();
+        /// <summary>
+        /// reads the files
+        /// </summary>
+        public abstract void ReadRESXFiles();
     }
 }

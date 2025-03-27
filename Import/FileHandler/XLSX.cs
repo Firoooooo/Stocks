@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Interop.Excel;
+﻿using ClosedXML.Excel;
+using Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
 
 namespace Import.FileHandler
@@ -14,41 +15,31 @@ namespace Import.FileHandler
         public XLSX(string _rESXFile)
         {
             RESXFile = _rESXFile;
+
+            ReadRESXFiles();
         }
 
         /// <summary>
         /// reads the xlsx file
         /// </summary>
-        public override void ReadXMLFiles()
+        public override void ReadRESXFiles()
         {
-            Microsoft.Office.Interop.Excel.Application xLSX = new Microsoft.Office.Interop.Excel.Application();
-            Workbook xLSXWorkbook = xLSX.Workbooks.Open(RESXFile);
-            Worksheet xLSXWorksheet = (Worksheet)xLSX.Worksheets[1];
-            Microsoft.Office.Interop.Excel.Range xLSXRange = xLSXWorksheet.UsedRange;
-            int xLSXRows = xLSXRange.Rows.Count;
-            int xLSXColumns = xLSXRange.Columns.Count;
-
-            try
+            using (var xLSXWorkbook = new XLWorkbook(RESXFile))
             {
+                var xLSXWorksheet = xLSXWorkbook.Worksheet(1);
+                var xLSXRange = xLSXWorksheet.RangeUsed();
+                var xLSXRows = xLSXRange.RowCount();
+                var xLSXColumns = xLSXRange.ColumnCount();
+
                 for (int xLSXRow = 1; xLSXRow <= xLSXRows; xLSXRow++)
                 {
                     for (int xLSXColumn = 1; xLSXColumn <= xLSXColumns; xLSXColumn++)
                     {
-                        if (((xLSXRange.Cells[xLSXRow, xLSXColumn] as Microsoft.Office.Interop.Excel.Range).Text.ToString()) == "")
+                        if (xLSXRange.Cell(xLSXRow, xLSXColumn).Value.ToString() == "")
                             continue;
-                        Stocks.Add((xLSXRange.Cells[xLSXRow, xLSXColumn] as Microsoft.Office.Interop.Excel.Range).Text.ToString());
+                        Stocks.Add(xLSXRange.Cell(xLSXRow, xLSXColumn).Value.ToString());
                     }
                 }
-                xLSXWorkbook.Close();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-            finally
-            {
-                xLSX.Quit();
-                Marshal.ReleaseComObject(xLSX);
             }
         }
     }

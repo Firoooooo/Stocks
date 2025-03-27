@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using Import.Resources;
+using System.Net.Http;
 
 namespace Import
 {
@@ -35,12 +36,12 @@ namespace Import
         /// <param name="_NASDAQS">the NASDAQ symbol of the stock for which data should be retrieved</param>
         /// <returns></returns>
         public async Task FetchAndStoreStockData(string _NASDAQS)
-        {
+        { 
             try
             {
                 string aPIURL = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={_NASDAQS}&apikey={APIKey}";
-                HttpClient hTTPClient = new HttpClient();  
-                HttpResponseMessage hTTPResponse = await hTTPClient.GetAsync(aPIURL);
+                HTTPClient = new HttpClient();
+                HttpResponseMessage hTTPResponse = await HTTPClient.GetAsync(aPIURL);
 
                 if (!hTTPResponse.IsSuccessStatusCode)
                     throw new Exception($"API CALL ist fehlgeschlagen {_NASDAQS} ");
@@ -48,7 +49,6 @@ namespace Import
                 string jSONResponse = await hTTPResponse.Content.ReadAsStringAsync();
 
                 ParseStockData(jSONResponse);
-
             }
             catch (Exception EX)
             {

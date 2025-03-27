@@ -11,21 +11,26 @@
         public CSV(string _rESXFile)
         {
             RESXFile = _rESXFile;
+
+            ReadRESXFiles();
         }
 
         /// <summary>
         /// reads the csv file
         /// </summary>
-        public override void ReadXMLFiles()
+        public override void ReadRESXFiles()
         {
             using (StreamReader xMLReader = new StreamReader(RESXFile))
             {
                 string cSVValue = xMLReader.ReadToEnd();
+                cSVValue = cSVValue.Replace("\"", "").Replace("\"\"", "");
                 string[] cSVSplittedValue = cSVValue.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
                 cSVSplittedValue
+                    .Where(V => !String.IsNullOrWhiteSpace(V))
+                    .Select(V => V.Replace(",", ""))
                     .ToList()
-                    .ForEach(L => Stocks.AddRange(L.Split(',')));
+                    .ForEach(V => Stocks.Add(V));
 
             }
         }

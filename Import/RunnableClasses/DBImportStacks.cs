@@ -38,7 +38,7 @@ namespace Import.RunnableClasses
                     Console.WriteLine("Die Datei im angegebenen Pfad scheint nicht zu existieren. Bitte geben Sie einen gültigen Pfad ein");
             }
 
-            FileReaderBase rESXFiles = FileReaderFactory.GetReader("Import.Files.NASDAQ.txt");
+            FileReaderBase rESXFiles = FileReaderFactory.GetReader(rESXFilePath);
             rESXFiles.GetFiles().ForEach(F => StockDataService.FetchAndStoreStockData(F));
         }
     }

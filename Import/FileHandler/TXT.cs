@@ -21,12 +21,14 @@ namespace Import.ImportHandler
         public TXT(string _rESXFile)
         {
             RESXFile = _rESXFile;
+
+            ReadRESXFiles();
         }
 
         /// <summary>
         /// reads the txt file
         /// </summary>
-        public override void ReadXMLFiles()
+        public override void ReadRESXFiles()
         {
             using (StreamReader rESXStreamReader = new StreamReader(RESXFile))
             {
