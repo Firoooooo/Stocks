@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Excel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,14 +12,25 @@ namespace Import.ImportHandler
 {
     public class TXT : FileReaderBase
     {
-        public Stream Stream { get; set; }
+        public string RESXFile { get; set; }
 
-
-        public TXT(Stream rESXStream)
+        /// <summary>
+        /// constructor  to receive and process the stream
+        /// </summary>
+        /// <param name="_rESXFile">file stream</param>
+        public TXT(string _rESXFile)
         {
-            Stream = rESXStream;
+            RESXFile = _rESXFile;
 
-            using (StreamReader rESXStreamReader = new StreamReader(Stream))
+            ReadRESXFiles();
+        }
+
+        /// <summary>
+        /// reads the txt file
+        /// </summary>
+        public override void ReadRESXFiles()
+        {
+            using (StreamReader rESXStreamReader = new StreamReader(RESXFile))
             {
                 string[] rESXSplitted = rESXStreamReader.ReadToEnd()
                          .Split(new[] { '\r', '\n' },

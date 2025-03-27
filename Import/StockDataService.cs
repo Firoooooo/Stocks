@@ -1,8 +1,13 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Diagnostics;
+using Import.Resources;
+using System.Net.Http;
 
 namespace Import
 {
+    /// <summary>
+    /// class for executing the api call and preparing the data
+    /// </summary>
     public class StockDataService
     {
         private string APIKey { get; set; }
@@ -13,6 +18,11 @@ namespace Import
             = new List<StockPrice>();
 
 
+        /// <summary>
+        /// overwrite the cosntrucutor with the api key and connection string
+        /// </summary>
+        /// <param name="API">api key</param>
+        /// <param name="CON">connection string</param>
         public StockDataService(string API, string CON)
         {
             APIKey = API;
@@ -20,21 +30,25 @@ namespace Import
             HTTPClient = new HttpClient();
         }
 
+        /// <summary>
+        /// fetches stock data from the Alpha Vantage API and processes it
+        /// </summary>
+        /// <param name="_NASDAQS">the NASDAQ symbol of the stock for which data should be retrieved</param>
+        /// <returns></returns>
         public async Task FetchAndStoreStockData(string _NASDAQS)
-        {
+        { 
             try
             {
                 string aPIURL = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={_NASDAQS}&apikey={APIKey}";
-                HttpClient hTTPClient = new HttpClient();  
-                HttpResponseMessage hTTPResponse = await hTTPClient.GetAsync(aPIURL);
+                HTTPClient = new HttpClient();
+                HttpResponseMessage hTTPResponse = await HTTPClient.GetAsync(aPIURL);
 
                 if (!hTTPResponse.IsSuccessStatusCode)
-                    throw new Exception($"API Anfrage für {_NASDAQS} ist fehlgeschlagen");
+                    throw new Exception($"API CALL ist fehlgeschlagen {_NASDAQS} ");
 
                 string jSONResponse = await hTTPResponse.Content.ReadAsStringAsync();
 
                 ParseStockData(jSONResponse);
-
             }
             catch (Exception EX)
             {
@@ -42,22 +56,26 @@ namespace Import
             }
         }
 
+        /// <summary>
+        /// parses the JSON response from the alpha vantage API and extracts stock price data
+        /// </summary>
+        /// <param name="_jSONResponse">the JSON response string containing stock market data</param>
         private void ParseStockData(string _jSONResponse)
         {
             JObject jSONParsed = JObject.Parse(_jSONResponse);
-            TimeSeriesData = jSONParsed["Time Series (Daily)"] as JObject;
+            TimeSeriesData = jSONParsed[Resources.Labels.TimeSeriesData] as JObject;
 
             if (TimeSeriesData != null)
             {
                 StockPrices.AddRange(TimeSeriesData.Properties().Select(D => new StockPrice
                 {
-                    Symbol = jSONParsed["Meta Data"]["2. Symbol"].ToString(),
+                    Symbol = jSONParsed[Resources.Labels.MetaData][Resources.Labels.Symbol].ToString(),
                     Date = DateTime.Parse(D.Name),
-                    Open = decimal.Parse(D.Value["1. open"].ToString()),
-                    High = decimal.Parse(D.Value["2. high"].ToString()),
-                    Low = decimal.Parse(D.Value["3. low"].ToString()),
-                    Close = decimal.Parse(D.Value["4. close"].ToString()),
-                    Volume = long.Parse(D.Value["5. volume"].ToString())
+                    Open = decimal.Parse(D.Value[Resources.Labels.Open].ToString()),
+                    High = decimal.Parse(D.Value[Resources.Labels.High].ToString()),
+                    Low = decimal.Parse(D.Value[Resources.Labels.Low].ToString()),
+                    Close = decimal.Parse(D.Value[Resources.Labels.Close].ToString()),
+                    Volume = long.Parse(D.Value[Resources.Labels.Volume].ToString())
                 }));
             }
         }
