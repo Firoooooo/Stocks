@@ -1,4 +1,5 @@
-﻿using Import.ImportHandler;
+﻿using Import.FileHandler;
+using Import.ImportHandler;
 using System.Reflection;
 
 namespace Import.Factories
@@ -10,10 +11,16 @@ namespace Import.Factories
             switch (Path.GetExtension(_rESXFile).ToUpper())
             {
                 case ".TXT":
-                    return new TXT(Assembly.GetExecutingAssembly().GetManifestResourceStream(_rESXFile));
+                    return new TXT(_rESXFile);
+
+                case ".CSV":
+                    return new CSV(_rESXFile);
+
+                case ".XLSX":
+                    return new XLSX(_rESXFile);
 
                 default:
-                    throw new ArgumentException("File Handling ist noch nicht Implementiert");
+                    throw new ArgumentException(Resources.Labels.NotImplemented);
             }
         }
     }
