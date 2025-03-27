@@ -43,7 +43,7 @@ namespace Import
                 HttpResponseMessage hTTPResponse = await hTTPClient.GetAsync(aPIURL);
 
                 if (!hTTPResponse.IsSuccessStatusCode)
-                    throw new Exception($"{Resources.Labels.APICallFailed} {_NASDAQS} ");
+                    throw new Exception($"API CALL ist fehlgeschlagen {_NASDAQS} ");
 
                 string jSONResponse = await hTTPResponse.Content.ReadAsStringAsync();
 

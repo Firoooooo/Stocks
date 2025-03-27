@@ -61,15 +61,6 @@ namespace Import.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to API REQUEST FAILED.
-        /// </summary>
-        public static string APICallFailed {
-            get {
-                return ResourceManager.GetString("APICallFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 4. close.
         /// </summary>
         public static string Close {

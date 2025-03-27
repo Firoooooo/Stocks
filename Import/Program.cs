@@ -1,5 +1,6 @@
 ﻿using Import.Factories;
 using Import.Resources;
+using Import.RunnableClasses;
 using MySqlX.XDevAPI.Common;
 using System.Data;
 using System.Reflection;
@@ -28,7 +29,25 @@ namespace Import
             .OrderBy(A => A.Attribute.TransactionNumber)
             .ToList();
 
+            Console.WriteLine("Entschiede dich für den Job, der ausgeführt werden soll");
+            rUNNABClasses.ForEach(T => Console.WriteLine($"{T.Attribute.TransactionNumber} {T.Attribute.Name}"));
+            if (int.TryParse(Console.ReadLine(), out int eXCNumber))
+            {
+                var sELClass = rUNNABClasses.FirstOrDefault(X => X.Attribute.TransactionNumber == eXCNumber);
+                OperationTypes oPType = (OperationTypes)Enum.Parse(typeof(OperationTypes), sELClass.Type.Name);
+                switch (oPType)
+                {
+                    case OperationTypes.DBImportStacks:
+                        DBImportStacks dBImportStacks = new DBImportStacks();
+                        dBImportStacks.Run();
+                        break;
 
+                    case OperationTypes.ClearStocks:
+                        ClearStocks cLEARStocks = new ClearStocks();
+                        cLEARStocks.Run();
+                        break;
+                }
+            }
         }
     }
 }

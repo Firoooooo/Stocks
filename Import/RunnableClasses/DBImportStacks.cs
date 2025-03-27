@@ -1,10 +1,4 @@
 ﻿using Import.Factories;
-using Import.Resources;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Import.RunnableClasses
 {
@@ -33,7 +27,7 @@ namespace Import.RunnableClasses
         public void ValidateFileToProcess()
         {
             string rESXFilePath = string.Empty;
-            Console.WriteLine(Labels.GiveFileInput);
+            Console.WriteLine("Geben Sie den Pfad zur Datei an, die ausgelesen werden soll. Die enthaltenen Daten werden anschließend zusammen mit den API Daten in die Datenbank geschrieben");
 
             while (true)
             {
@@ -41,7 +35,7 @@ namespace Import.RunnableClasses
                 if (File.Exists(rESXFilePath))
                     break;
                 else
-                    Console.WriteLine(Labels.FileDoesntExists);
+                    Console.WriteLine("Die Datei im angegebenen Pfad scheint nicht zu existieren. Bitte geben Sie einen gültigen Pfad ein");
             }
 
             FileReaderBase rESXFiles = FileReaderFactory.GetReader("Import.Files.NASDAQ.txt");
