@@ -34,21 +34,20 @@ namespace Import
         /// fetches stock data from the Alpha Vantage API and processes it
         /// </summary>
         /// <param name="_NASDAQS">the NASDAQ symbol of the stock for which data should be retrieved</param>
-        /// <returns></returns>
-        public async Task FetchAndStoreStockData(string _NASDAQS)
+        /// <returns>Task</returns>
+        public async Task FetchAndStoreStockData(string _nASDAQS)
         { 
             try
             {
                 string aPIURL = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={_NASDAQS}&apikey={APIKey}";
-                HTTPClient = new HttpClient();
-                HttpResponseMessage hTTPResponse = await HTTPClient.GetAsync(aPIURL);
+                HttpResponseMessage rESP = HTTPClient.GetAsync(aPIURL).Result;
 
-                if (!hTTPResponse.IsSuccessStatusCode)
-                    throw new Exception($"API CALL ist fehlgeschlagen {_NASDAQS} ");
+                if (!rESP.IsSuccessStatusCode)
+                    throw new Exception($"API CALL ist fehlgeschlagen {_nASDAQS}");
 
-                string jSONResponse = await hTTPResponse.Content.ReadAsStringAsync();
+                string jSON = await rESP.Content.ReadAsStringAsync();
 
-                ParseStockData(jSONResponse);
+                ParseStockData(jSON);
             }
             catch (Exception EX)
             {
@@ -59,10 +58,10 @@ namespace Import
         /// <summary>
         /// parses the JSON response from the alpha vantage API and extracts stock price data
         /// </summary>
-        /// <param name="_jSONResponse">the JSON response string containing stock market data</param>
-        private void ParseStockData(string _jSONResponse)
+        /// <param name="_jSON">the JSON response string containing stock market data</param>
+        private void ParseStockData(string _jSON)
         {
-            JObject jSONParsed = JObject.Parse(_jSONResponse);
+            JObject jSONParsed = JObject.Parse(_jSON);
             TimeSeriesData = jSONParsed[Resources.Labels.TimeSeriesData] as JObject;
 
             if (TimeSeriesData != null)

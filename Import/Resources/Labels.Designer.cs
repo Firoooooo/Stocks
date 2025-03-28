@@ -115,15 +115,6 @@ namespace Import.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File handling has not yet been implemented.
-        /// </summary>
-        public static string NotImplemented {
-            get {
-                return ResourceManager.GetString("NotImplemented", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 1. open.
         /// </summary>
         public static string Open {
