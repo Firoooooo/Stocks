@@ -15,9 +15,9 @@ namespace Import.RunnableClasses
         /// </summary>
         public override void Run()
         {
-            string aPIKEY = @"EZC8NLKMV664QLL3";
-            string cONString = string.Empty;
-            StockDataService = new StockDataService(aPIKEY, cONString);
+            const string APIKEY = @"EZC8NLKMV664QLL3";
+            const string CONNECTIONSTRING = "";
+            StockDataService = new StockDataService(APIKEY, CONNECTIONSTRING);
             ValidateFileToProcess();
         }
 

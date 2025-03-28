@@ -15,7 +15,7 @@ namespace Import.RunnableClasses
         // TODO : Erstelle eine SQL Connection über den Connectrion String vom Docker zur Datenbank und lösche die Einträge
         public override void Run()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

@@ -34,7 +34,6 @@
                     .Select(V => V.Replace(",", ""))
                     .ToList()
                     .ForEach(V => Stocks.Add(V));
-
             }
         }
     }
