@@ -14,7 +14,7 @@ namespace Import
         /// </summary>
         /// <param name="_aRGS">args</param>
         /// <returns>Task</returns>
-        static async Task Main(string[] _aRGS)
+        static void Main(string[] _aRGS)
         {
             RunSelectedTask();
         }
