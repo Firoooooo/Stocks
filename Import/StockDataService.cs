@@ -34,21 +34,20 @@ namespace Import
         /// fetches stock data from the Alpha Vantage API and processes it
         /// </summary>
         /// <param name="_NASDAQS">the NASDAQ symbol of the stock for which data should be retrieved</param>
-        /// <returns></returns>
+        /// <returns>Task</returns>
         public async Task FetchAndStoreStockData(string _NASDAQS)
         { 
             try
             {
                 string aPIURL = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={_NASDAQS}&apikey={APIKey}";
-                HTTPClient = new HttpClient();
-                HttpResponseMessage hTTPResponse = await HTTPClient.GetAsync(aPIURL);
+                HttpResponseMessage hTTPResponse = HTTPClient.GetAsync(aPIURL).Result;
 
                 if (!hTTPResponse.IsSuccessStatusCode)
                     throw new Exception($"API CALL ist fehlgeschlagen {_NASDAQS} ");
 
-                string jSONResponse = await hTTPResponse.Content.ReadAsStringAsync();
+                string jSON = await hTTPResponse.Content.ReadAsStringAsync();
 
-                ParseStockData(jSONResponse);
+                ParseStockData(jSON);
             }
             catch (Exception EX)
             {

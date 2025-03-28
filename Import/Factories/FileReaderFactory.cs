@@ -1,11 +1,19 @@
 ﻿using Import.FileHandler;
 using Import.ImportHandler;
-using System.Reflection;
 
 namespace Import.Factories
 {
+    /// <summary>
+    /// factory class to return the appropriate reader based on the file extension
+    /// </summary>
     public class FileReaderFactory
     {
+        /// <summary>
+        /// based on the file extension, returns the appropriate reader
+        /// </summary>
+        /// <param name="_rESXFile">resx file path</param>
+        /// <returns>FileReaderBase</returns>
+        /// <exception cref="ArgumentException"></exception>
         public static FileReaderBase GetReader(string _rESXFile)
         {
             switch (Path.GetExtension(_rESXFile).ToUpper())
@@ -20,7 +28,7 @@ namespace Import.Factories
                     return new XLSX(_rESXFile);
 
                 default:
-                    throw new ArgumentException(Resources.Labels.NotImplemented);
+                    throw new ArgumentException("Entsprechendes File Handling ist nicht Implementiert");
             }
         }
     }

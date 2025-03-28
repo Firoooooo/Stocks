@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Import
+﻿namespace Import
 {
     /// <summary>
     /// runnable classes that can be executed
     /// </summary>
     public enum OperationTypes
     {
+        /// <summary>
+        /// import the stacks to the database
+        /// </summary>
         DBImportStacks,
+
+        /// <summary>
+        /// clear the stocks from the database
+        /// </summary>
         ClearStocks
     }
 }

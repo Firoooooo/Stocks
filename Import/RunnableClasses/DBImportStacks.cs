@@ -39,7 +39,7 @@ namespace Import.RunnableClasses
             }
 
             FileReaderBase rESXFiles = FileReaderFactory.GetReader(rESXFilePath);
-            rESXFiles.GetFiles().ForEach(F => StockDataService.FetchAndStoreStockData(F));
+            rESXFiles.GetFiles().ForEach(async F => await StockDataService.FetchAndStoreStockData(F));
         }
     }
 }

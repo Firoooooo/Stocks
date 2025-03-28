@@ -1,15 +1,8 @@
-﻿using Microsoft.Office.Interop.Excel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Metadata.Ecma335;
-using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Import.ImportHandler
+﻿namespace Import.ImportHandler
 {
+    /// <summary>
+    /// class to read the txt file
+    /// </summary>
     public class TXT : FileReaderBase
     {
         public string RESXFile { get; set; }

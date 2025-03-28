@@ -1,9 +1,10 @@
 ﻿using ClosedXML.Excel;
-using Microsoft.Office.Interop.Excel;
-using System.Runtime.InteropServices;
 
 namespace Import.FileHandler
 {
+    /// <summary>
+    /// class to read the xlsx file
+    /// </summary>
     public class XLSX : FileReaderBase
     {
         public string RESXFile { get; set; }

@@ -135,9 +135,6 @@
   <data name="MetaData" xml:space="preserve">
     <value>Meta Data</value>
   </data>
-  <data name="NotImplemented" xml:space="preserve">
-    <value>File handling has not yet been implemented</value>
-  </data>
   <data name="Open" xml:space="preserve">
     <value>1. open</value>
   </data>

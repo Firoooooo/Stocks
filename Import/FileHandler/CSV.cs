@@ -1,5 +1,8 @@
 ﻿namespace Import.FileHandler
 {
+    /// <summary>
+    /// class to read the csv file
+    /// </summary>
     public class CSV : FileReaderBase
     {
         public string RESXFile { get; set; }
