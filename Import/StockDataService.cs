@@ -39,7 +39,7 @@ namespace Import
         { 
             try
             {
-                string aPIURL = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={_NASDAQS}&apikey={APIKey}";
+                string aPIURL = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={_nASDAQS}&apikey={APIKey}";
                 HttpResponseMessage rESP = HTTPClient.GetAsync(aPIURL).Result;
 
                 if (!rESP.IsSuccessStatusCode)
