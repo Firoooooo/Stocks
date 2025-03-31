@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using Import.RunnableClasses;
 using System.Data;
 using System.Reflection;
+using Import.Context;
 
 namespace Import
 {
@@ -15,9 +16,13 @@ namespace Import
         /// main mehtode that executes the api call, prepares the data and writes it to the database
         /// </summary>
         /// <param name="_aRGS">args</param>
-        /// <returns>Task</returns>
         static void Main(string[] _aRGS)
         {
+            // Bei der Auführung muss der Connection Sting zur Datenbank angegeben werden. Die API kann weiterhin über den API Key angesprochen werden, ist allerdings auf 25 Anfragen pro Tag beschränkt
+            Connections cON = new Connections();
+            cON.APIKey = "EZC8NLKMV664QLL3";
+            cON.ConnectionString = "Server=localhost;Port=3306;User Id=root;Password=Password;";
+
             var rUNNABClasses = Assembly.GetExecutingAssembly().GetTypes()
                             .Where(T => T.GetCustomAttributes(typeof(RunnableClassAttribute), false).Any())
                             .Select(T => new
@@ -44,12 +49,12 @@ namespace Import
                     switch ((OperationTypes)Enum.Parse(typeof(OperationTypes), sELClass.Type.Name))
                     {
                         case OperationTypes.DBImportStacks:
-                            DBImportStacks dBImportStacks = new DBImportStacks();
+                            DBImportStacks dBImportStacks = new DBImportStacks(cON);
                             dBImportStacks.Run();
                             break;
 
                         case OperationTypes.ClearStocks:
-                            ClearStocks cLEARStocks = new ClearStocks();
+                            ClearStocks cLEARStocks = new ClearStocks(cON);
                             cLEARStocks.Run();
                             break;
                     }
