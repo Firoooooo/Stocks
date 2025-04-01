@@ -44,9 +44,9 @@ namespace Import
                     if (rUNNABClasses.Last().Attribute.TransactionNumber == eXCNumber)
                         break;
 
-                    var sELClass = rUNNABClasses.FirstOrDefault(X => X.Attribute.TransactionNumber == eXCNumber);
+                    var cLASS = rUNNABClasses.FirstOrDefault(X => X.Attribute.TransactionNumber == eXCNumber);
 
-                    switch ((OperationTypes)Enum.Parse(typeof(OperationTypes), sELClass.Type.Name))
+                    switch ((OperationTypes)Enum.Parse(typeof(OperationTypes), cLASS.Type.Name))
                     {
                         case OperationTypes.DBImportStacks:
                             DBImportStacks dBImportStacks = new DBImportStacks(cON);
