@@ -1,4 +1,5 @@
-﻿using Import.Factories;
+﻿using Import.Context;
+using Import.Factories;
 
 namespace Import.RunnableClasses
 {
@@ -8,6 +9,16 @@ namespace Import.RunnableClasses
     [RunnableClassAttribute(1, "Liest Bezeichnungen aus einer Datei, ruft die zugehörigen Daten über eine API ab und speichert sie in einer Datenbank")]
     public class DBImportStacks : RunnableClassBase
     {
+        /// <summary>
+        /// base call
+        /// </summary>
+        /// <param name="_cON">connection context</param>
+        public DBImportStacks(Connections _cON) 
+            : base(_cON)
+        {
+            CON = _cON;
+        }
+
         public StockDataService StockDataService { get; set; }
 
         /// <summary>

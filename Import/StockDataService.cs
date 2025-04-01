@@ -33,7 +33,7 @@ namespace Import
         /// <summary>
         /// fetches stock data from the Alpha Vantage API and processes it
         /// </summary>
-        /// <param name="_NASDAQS">the NASDAQ symbol of the stock for which data should be retrieved</param>
+        /// <param name="_nASDAQS">the NASDAQ symbol of the stock for which data should be retrieved</param>
         /// <returns>Task</returns>
         public async Task FetchAndStoreStockData(string _nASDAQS)
         { 
