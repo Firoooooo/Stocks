@@ -57,6 +57,11 @@ namespace Import
                             ClearStocks cLEARStocks = new ClearStocks(cON);
                             cLEARStocks.Run();
                             break;
+
+                        case OperationTypes.SchemaBuilder:
+                            SchemaBuilder sCHEmaBuilder = new SchemaBuilder(cON);
+                            sCHEmaBuilder.Run();
+                            break;
                     }
                 }
             }
