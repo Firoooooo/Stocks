@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Import.Context;
+﻿using Import.Context;
+using MySql.Data.MySqlClient;
 
 namespace Import.RunnableClasses
 {
-    [RunnableClassAttribute(2, "Erstellen der Datenbankstruktur einschließlich der Tabellen und Referenzen")]
+    [RunnableClassAttribute(1, "Initialisierung der Datenbankstruktur einschließlich der Tabellen und Referenzen")]
     public class SchemaBuilder : RunnableClassBase
     {
         /// <summary>
@@ -25,7 +21,13 @@ namespace Import.RunnableClasses
         /// </summary>
         public override void Run()
         {
-            // TODO : Implementiere den Schema Builder, in dem ein Relationales Datenbankmodell erstellt wird
+            using (MySqlConnection sQLCon = new MySqlConnection(CON.CONNECTIONSTRING))
+            {
+                sQLCon.Open();
+
+                SQLInitializer sQLInitializer = new SQLInitializer(CON);
+                sQLInitializer.Initialize();
+            }
         }
     }
 }

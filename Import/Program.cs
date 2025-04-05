@@ -4,6 +4,7 @@ using Import.RunnableClasses;
 using System.Data;
 using System.Reflection;
 using Import.Context;
+using Import.Resources;
 
 namespace Import
 {
@@ -19,9 +20,7 @@ namespace Import
         static void Main(string[] _aRGS)
         {
             // Bei der Auführung muss der Connection Sting zur Datenbank angegeben werden. Die API kann weiterhin über den API Key angesprochen werden, ist allerdings auf 25 Anfragen pro Tag beschränkt
-            Connections cON = new Connections();
-            cON.APIKey = "EZC8NLKMV664QLL3";
-            cON.ConnectionString = "Server=localhost;Port=3306;User Id=root;Password=Password;";
+            Connections cON = new Connections("EZC8NLKMV664QLL3", "Server=localhost;Port=3306;User Id=root;Password=Password;", "Stocks");
 
             var rUNNABClasses = Assembly.GetExecutingAssembly().GetTypes()
                             .Where(T => T.GetCustomAttributes(typeof(RunnableClassAttribute), false).Any())
@@ -32,7 +31,7 @@ namespace Import
                             })
                             .OrderBy(A => A.Attribute.TransactionNumber)
                             .ToList();
-            rUNNABClasses.Add(new { Type = typeof(Program), Attribute = new RunnableClassAttribute(rUNNABClasses.Count + 1, "Program beenden") });
+            rUNNABClasses.Add(new { Type = typeof(Program), Attribute = new RunnableClassAttribute(rUNNABClasses.Count + 1, Labels.EndProgram) });
 
             while (true)
             {

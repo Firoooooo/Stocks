@@ -1,5 +1,6 @@
 ﻿using Import.FileHandler;
 using Import.ImportHandler;
+using Import.Resources;
 
 namespace Import.Factories
 {
@@ -28,7 +29,7 @@ namespace Import.Factories
                     return new XLSX(_rESXFile);
 
                 default:
-                    throw new ArgumentException("Entsprechendes File Handling ist nicht Implementiert");
+                    throw new ArgumentException(Labels.FileHandlingException);
             }
         }
     }
