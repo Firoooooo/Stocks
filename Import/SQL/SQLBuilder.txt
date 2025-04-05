@@ -1,62 +1,74 @@
-CREATE TABLE USER (
-    USERID INT PRIMARY KEY AUTO_INCREMENT,           -- Eindeutige Benutzer-ID
-    USERNAME VARCHAR(255) NOT NULL,                   -- Benutzername
-    EMAIL VARCHAR(255) NOT NULL,                      -- E-Mail-Adresse des Benutzers
-    PASSWORDHASH VARCHAR(255) NOT NULL,               -- Passwort-Hash
-    BALANCE DECIMAL(15, 2) DEFAULT 0.00              -- Guthaben des Benutzers
-);
+-- Erstelle die Datenbank, falls sie noch nicht existiert
+IF NOT EXISTS (SELECT NAME FROM SYS.DATABASES WHERE NAME = Connections.CONNECTIONSTRING)
+BEGIN
+    CREATE DATABASE DeineDatenbankName;
+END;
 
-CREATE TABLE STOCK (
-    STOCKID INT PRIMARY KEY AUTO_INCREMENT,           -- Eindeutige ID der Aktie
-    TICKERSYMBOL VARCHAR(10) NOT NULL UNIQUE,         -- Tickersymbol der Aktie (z.B. AAPL, TSLA)
-    COMPANYNAME VARCHAR(255) NOT NULL,                -- Name des Unternehmens
-    CURRENTPRICE DECIMAL(10, 2) NOT NULL,             -- Aktueller Preis der Aktie
-    MARKETCAP DECIMAL(20, 2),                         -- Marktkapitalisierung der Aktie
-    SECTOR VARCHAR(100),                              -- Sektor des Unternehmens (z.B. Technologie, Finanz)
-    CURRENCY VARCHAR(3),                              -- Währung, in der die Aktie gehandelt wird (z.B. USD, EUR)
-    LASTUPDATED TIMESTAMP DEFAULT CURRENT_TIMESTAMP   -- Zeitstempel der letzten Aktualisierung
-);
+-- Erstelle die USER-Tabelle, falls sie noch nicht existiert
+IF OBJECT_ID('USER', 'U') IS NULL
+BEGIN
+    CREATE TABLE USER (
+        USERID INT PRIMARY KEY IDENTITY(1,1),           
+        USERNAME VARCHAR(255) NOT NULL,                  
+        EMAIL VARCHAR(255) NOT NULL,                    
+        PASSWORDHASH VARCHAR(255) NOT NULL,             
+        BALANCE DECIMAL(15, 2) DEFAULT 0.00             
+    );
+END;
 
-CREATE TABLE STOCKHISTORY (
-    HISTORYID INT PRIMARY KEY AUTO_INCREMENT,        -- Eindeutige ID der historischen Daten
-    STOCKID INT NOT NULL,                             -- Verweis auf die Aktie (foreign key)
-    SYMBOL VARCHAR(10) NOT NULL,                      -- Tickersymbol der Aktie
-    DATE DATE NOT NULL,                               -- Datum des historischen Datensatzes
-    OPEN DECIMAL(10, 2) NOT NULL,                     -- Eröffnungspreis der Aktie
-    HIGH DECIMAL(10, 2) NOT NULL,                     -- Höchster Preis der Aktie an diesem Tag
-    LOW DECIMAL(10, 2) NOT NULL,                      -- Niedrigster Preis der Aktie an diesem Tag
-    CLOSE DECIMAL(10, 2) NOT NULL,                    -- Schlusskurs der Aktie an diesem Tag
-    VOLUME BIGINT NOT NULL,                           -- Handelsvolumen der Aktie an diesem Tag
-    FOREIGN KEY (STOCKID) REFERENCES STOCK(STOCKID) ON DELETE CASCADE,  -- Verweis auf die STOCK-Tabelle
-    UNIQUE(STOCKID, DATE)                             -- Sicherstellen, dass pro Tag nur ein Datensatz existiert
-);
+-- Erstelle die STOCK-Tabelle, falls sie noch nicht existiert
+IF OBJECT_ID('STOCK', 'U') IS NULL
+BEGIN
+    CREATE TABLE STOCK (
+        STOCKID INT PRIMARY KEY IDENTITY(1,1),           
+        TICKERSYMBOL VARCHAR(10) NOT NULL UNIQUE,        
+        COMPANYNAME VARCHAR(255) NOT NULL,              
+        CURRENTPRICE DECIMAL(10, 2) NOT NULL,           
+        MARKETCAP DECIMAL(20, 2),                       
+        SECTOR VARCHAR(100),                            
+        CURRENCY VARCHAR(3),                             
+        LASTUPDATED TIMESTAMP DEFAULT CURRENT_TIMESTAMP   
+    );
+END;
 
-CREATE TABLE TRANSACTION (
-    TRANSACTIONID INT PRIMARY KEY AUTO_INCREMENT,    -- Eindeutige Transaktions-ID
-    USERID INT NOT NULL,                              -- Verweis auf den Benutzer
-    STOCKID INT NOT NULL,                             -- Verweis auf die Aktie
-    TRANSACTIONTYPE ENUM('BUY', 'SELL') NOT NULL,     -- Transaktionstyp (Kauf oder Verkauf)
-    QUANTITY INT NOT NULL,                            -- Menge der gehandelten Aktien
-    PRICE DECIMAL(10, 2) NOT NULL,                    -- Preis der Aktie zum Zeitpunkt der Transaktion
-    TRANSACTIONDATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Datum der Transaktion
-    FOREIGN KEY (USERID) REFERENCES USER(USERID),    -- Verweis auf den Benutzer
-    FOREIGN KEY (STOCKID) REFERENCES STOCK(STOCKID)  -- Verweis auf die Aktie
-);
+-- Erstelle die TRANSACTION-Tabelle, falls sie noch nicht existiert
+IF OBJECT_ID('TRANSACTION', 'U') IS NULL
+BEGIN
+    CREATE TABLE TRANSACTION (
+        TRANSACTIONID INT PRIMARY KEY IDENTITY(1,1),    
+        USERID INT NOT NULL,                              
+        STOCKID INT NOT NULL,                             
+        TRANSACTIONTYPE VARCHAR(4) CHECK (TRANSACTIONTYPE IN ('BUY', 'SELL')) NOT NULL,     
+        QUANTITY INT NOT NULL,                            
+        PRICE DECIMAL(10, 2) NOT NULL,                    
+        TRANSACTIONDATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+        FOREIGN KEY (USERID) REFERENCES USER(USERID),    
+        FOREIGN KEY (STOCKID) REFERENCES STOCK(STOCKID)  
+    );
+END;
 
-CREATE TABLE USERPORTFOLIO (
-    PORTFOLIOID INT PRIMARY KEY AUTO_INCREMENT,       -- Eindeutige Portfolio-ID
-    USERID INT NOT NULL,                              -- Verweis auf den Benutzer
-    STOCKID INT NOT NULL,                             -- Verweis auf die Aktie
-    QUANTITY INT NOT NULL,                            -- Menge der gehaltenen Aktien
-    FOREIGN KEY (USERID) REFERENCES USER(USERID),    -- Verweis auf den Benutzer
-    FOREIGN KEY (STOCKID) REFERENCES STOCK(STOCKID), -- Verweis auf die Aktie
-    UNIQUE(USERID, STOCKID)                           -- Sicherstellen, dass ein Benutzer pro Aktie nur einen Datensatz hat
-);
+-- Erstelle die USERPORTFOLIO-Tabelle, falls sie noch nicht existiert
+IF OBJECT_ID('USERPORTFOLIO', 'U') IS NULL
+BEGIN
+    CREATE TABLE USERPORTFOLIO (
+        PORTFOLIOID INT PRIMARY KEY IDENTITY(1,1),       
+        USERID INT NOT NULL,                              
+        STOCKID INT NOT NULL,                             
+        QUANTITY INT NOT NULL,                            
+        FOREIGN KEY (USERID) REFERENCES USER(USERID),    
+        FOREIGN KEY (STOCKID) REFERENCES STOCK(STOCKID), 
+        UNIQUE(USERID, STOCKID)                          
+    );
+END;
 
-CREATE TABLE PORTFOLIOVALUEHISTORY (
-    HISTORYID INT PRIMARY KEY AUTO_INCREMENT,        -- Eindeutige ID des Portfolio-Werts
-    USERID INT NOT NULL,                              -- Verweis auf den Benutzer
-    TOTALVALUE DECIMAL(15, 2) NOT NULL,               -- Gesamtwert des Portfolios zu diesem Zeitpunkt
-    DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP,         -- Zeitpunkt der Wertaufzeichnung
-    FOREIGN KEY (USERID) REFERENCES USER(USERID)     -- Verweis auf den Benutzer
-);
+-- Erstelle die PORTFOLIOVALUEHISTORY-Tabelle, falls sie noch nicht existiert
+IF OBJECT_ID('PORTFOLIOVALUEHISTORY', 'U') IS NULL
+BEGIN
+    CREATE TABLE PORTFOLIOVALUEHISTORY (
+        HISTORYID INT PRIMARY KEY IDENTITY(1,1),        
+        USERID INT NOT NULL,                              
+        TOTALVALUE DECIMAL(15, 2) NOT NULL,               
+        DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP,         
+        FOREIGN KEY (USERID) REFERENCES USER(USERID)     
+    );
+END;

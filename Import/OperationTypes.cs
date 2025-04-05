@@ -13,6 +13,11 @@
         /// <summary>
         /// clear the stocks from the database
         /// </summary>
-        ClearStocks
+        ClearStocks,
+
+        /// <summary>
+        /// import the schema to the database
+        /// </summary>
+        SchemaBuilder
     }
 }

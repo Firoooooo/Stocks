@@ -43,7 +43,7 @@ namespace Import
                 HttpResponseMessage rESP = HTTPClient.GetAsync(aPIURL).Result;
 
                 if (!rESP.IsSuccessStatusCode)
-                    throw new Exception($"API CALL ist fehlgeschlagen {_nASDAQS}");
+                    throw new Exception($"{Labels.APICallFailed} {_nASDAQS}");
 
                 string jSON = await rESP.Content.ReadAsStringAsync();
 

@@ -117,11 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="APICallFailed" xml:space="preserve">
+    <value>API CALL ist fehlgeschlagen</value>
+  </data>
   <data name="Close" xml:space="preserve">
     <value>4. close</value>
   </data>
+  <data name="EndProgram" xml:space="preserve">
+    <value>Programm beenden</value>
+  </data>
+  <data name="EnterFile" xml:space="preserve">
+    <value>Geben Sie den Pfad zur Datei an, die ausgelesen werden soll. Die enthaltenen Daten werden anschließend zusammen mit den API Daten in die Datenbank geschrieben</value>
+  </data>
   <data name="FileDoesntExists" xml:space="preserve">
     <value>The file at the specified path does not seem to exist. Please enter a valid path.</value>
+  </data>
+  <data name="FileDontExists" xml:space="preserve">
+    <value>Die Datei im angegebenen Pfad scheint nicht zu existieren. Bitte geben Sie einen gültigen Pfad ein</value>
+  </data>
+  <data name="FileHandlingException" xml:space="preserve">
+    <value>Entsprechendes File Handling ist nicht Implementiert</value>
   </data>
   <data name="GiveFileInput" xml:space="preserve">
     <value>Enter the path to the Excel file to be read. The data it contains will then be written to the database along with the API data.</value>
