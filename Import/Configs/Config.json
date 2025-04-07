@@ -1,0 +1,5 @@
+{
+  "APIKEY": "EZC8NLKMV664QLL3",
+  "CONNECTIONSTRING": "Server=localhost;Port=3306;User Id=root;Password=Password;",
+  "DATABASENAME": "Stocks"
+}

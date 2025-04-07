@@ -1,23 +1,16 @@
-﻿namespace Import.Context
+﻿using Newtonsoft.Json;
+
+namespace Import.Context
 {
     public class Connections
     {
+        [JsonProperty("APIKEY")]
         public string APIKEY { get; set; }
+        
+        [JsonProperty("CONNECTIONSTRING")]
         public string CONNECTIONSTRING { get; set; }
 
+        [JsonProperty("DATABASENAME")]
         public string DATABASENAME {  get; set; }
-
-        /// <summary>
-        /// constructor
-        /// </summary>
-        public Connections(
-            string _APIKEY,
-            string _CONNECTIONSTRING,
-            string _DATABASENAME) 
-        {
-            APIKEY = _APIKEY;
-            CONNECTIONSTRING = _CONNECTIONSTRING;
-            DATABASENAME = _DATABASENAME;
-        }
     }
 }

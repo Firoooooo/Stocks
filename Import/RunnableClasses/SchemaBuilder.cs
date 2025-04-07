@@ -27,6 +27,7 @@ namespace Import.RunnableClasses
 
                 SQLInitializer sQLInitializer = new SQLInitializer(CON);
                 sQLInitializer.Initialize();
+                // Evtl. eine Methode zum befüllen der Tabellen ? 
             }
         }
     }

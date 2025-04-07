@@ -28,13 +28,13 @@ namespace Import.RunnableClasses
         public override void Run()
         {
             StockDataService = new StockDataService(CON.APIKEY, CON.CONNECTIONSTRING);
-            ValidateFileToProcess();
+            CheckForFiles();
         }
 
         /// <summary>
         /// checks whether the file exists or not
         /// </summary>
-        public void ValidateFileToProcess()
+        public void CheckForFiles()
         {
             string rESXFilePath = string.Empty;
             Console.WriteLine(Labels.EnterFile);
