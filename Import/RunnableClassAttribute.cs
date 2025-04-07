@@ -9,6 +9,7 @@
         public int TransactionNumber { get; set; }  
         public string Name { get; set; }
 
+
         /// <summary>
         /// extend the constructor with which the classes must be initialized
         /// </summary>

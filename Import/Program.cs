@@ -5,6 +5,10 @@ using System.Data;
 using System.Reflection;
 using Import.Context;
 using Import.Resources;
+using Org.BouncyCastle.Crypto.Engines;
+using Newtonsoft.Json;
+using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.Extensions.Configuration;
 
 namespace Import
 {
@@ -19,8 +23,17 @@ namespace Import
         /// <param name="_aRGS">args</param>
         static void Main(string[] _aRGS)
         {
-            // Bei der Auführung muss der Connection Sting zur Datenbank angegeben werden. Die API kann weiterhin über den API Key angesprochen werden, ist allerdings auf 25 Anfragen pro Tag beschränkt
-            Connections cON = new Connections("EZC8NLKMV664QLL3", "Server=localhost;Port=3306;User Id=root;Password=Password;", "Stocks");
+            Connections cON = null;
+
+            using (Stream rESXFile = Assembly.GetExecutingAssembly().GetManifestResourceStream("Import.Configs.Config.json"))
+            {
+                using (StreamReader rESXReader = new StreamReader(rESXFile))
+                {
+                    string rESXContent = rESXReader.ReadToEnd();
+
+                    cON = JsonConvert.DeserializeObject<Connections>(rESXContent);
+                }
+            }
 
             var rUNNABClasses = Assembly.GetExecutingAssembly().GetTypes()
                             .Where(T => T.GetCustomAttributes(typeof(RunnableClassAttribute), false).Any())
@@ -44,25 +57,33 @@ namespace Import
                         break;
 
                     var cLASS = rUNNABClasses.FirstOrDefault(X => X.Attribute.TransactionNumber == eXCNumber);
-
-                    switch ((OperationTypes)Enum.Parse(typeof(OperationTypes), cLASS.Type.Name))
-                    {
-                        case OperationTypes.DBImportStacks:
-                            DBImportStacks dBImportStacks = new DBImportStacks(cON);
-                            dBImportStacks.Run();
-                            break;
-
-                        case OperationTypes.ClearStocks:
-                            ClearStocks cLEARStocks = new ClearStocks(cON);
-                            cLEARStocks.Run();
-                            break;
-
-                        case OperationTypes.SchemaBuilder:
-                            SchemaBuilder sCHEmaBuilder = new SchemaBuilder(cON);
-                            sCHEmaBuilder.Run();
-                            break;
-                    }
+                    ExecuteOperation(cON, cLASS.Type);
                 }
+            }
+        }
+
+        /// <summary>
+        /// executes he corresponding operation
+        /// </summary>
+        /// <param name="_cON">context class which includes the informations needed during the operation</param>
+        /// <param name="_eXCType">attribute of the class</param>
+        private static void ExecuteOperation(Connections _cON, Type _eXCType)
+        {
+            switch ((OperationTypes)Enum.Parse(typeof(OperationTypes), _eXCType.Name))
+            {
+                case OperationTypes.DBImportStacks:
+                    new DBImportStacks(_cON).Run();
+                    break;
+
+                case OperationTypes.ClearStocks:
+                    new ClearStocks(_cON).Run();
+                    break;
+
+                case OperationTypes.SchemaBuilder:
+                    new SchemaBuilder(_cON).Run();
+                    break;
+
+                    // Weitere Operationen hier hinzufügen, falls notwendig
             }
         }
     }

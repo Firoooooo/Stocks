@@ -10,11 +10,6 @@ namespace Import
     {
         public Connections CON { get; set; }
 
-        /// <summary>
-        /// run method of the runnable classes
-        /// </summary>
-        public abstract void Run();
-
 
         /// <summary>
         /// constructor
@@ -23,5 +18,12 @@ namespace Import
         {
             CON = _cON;
         }
+
+        /// <summary>
+        /// run method of the runnable classes
+        /// </summary>
+        public abstract void Run();
+
+        
     }
 }

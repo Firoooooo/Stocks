@@ -21,12 +21,12 @@ namespace Import
         /// <summary>
         /// overwrite the cosntrucutor with the api key and connection string
         /// </summary>
-        /// <param name="API">api key</param>
-        /// <param name="CON">connection string</param>
-        public StockDataService(string API, string CON)
+        /// <param name="_API">api key</param>
+        /// <param name="_CON">connection string</param>
+        public StockDataService(string _API, string _CON)
         {
-            APIKey = API;
-            ConnectionString = CON; // Evtl auslagern in eine andere Klasse
+            APIKey = _API;
+            ConnectionString = _CON; // Evtl auslagern in eine andere Klasse
             HTTPClient = new HttpClient();
         }
 
