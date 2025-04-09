@@ -1,6 +1,4 @@
-﻿using CON = Import.Context;
-using MySql.Data.MySqlClient;
-using Import.Context;
+﻿using Import.Context;
 
 namespace Import.RunnableClasses
 {

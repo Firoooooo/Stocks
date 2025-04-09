@@ -1,16 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Diagnostics;
+﻿using Import.Context;
 using Import.Resources;
-using System.Net.Http;
-using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
-using Import.Context;
-using Import.RunnableClasses;
-using DocumentFormat.OpenXml.Bibliography;
-using DocumentFormat.OpenXml.Drawing.Charts;
-using DocumentFormat.OpenXml.EMMA;
-using Mysqlx.Crud;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 
 namespace Import
 {

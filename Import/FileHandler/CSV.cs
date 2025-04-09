@@ -1,6 +1,4 @@
-﻿using Import.Resources;
-using Newtonsoft.Json;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Import.FileHandler
 {
