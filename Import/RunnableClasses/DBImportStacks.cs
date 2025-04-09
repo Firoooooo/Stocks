@@ -1,6 +1,8 @@
 ﻿using Import.Context;
 using Import.Factories;
 using Import.Resources;
+using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Import.RunnableClasses
 {
@@ -11,6 +13,7 @@ namespace Import.RunnableClasses
     public class DBImportStacks : RunnableClassBase
     {
         public StockDataService StockDataService { get; set; }
+
 
         /// <summary>
         /// base call
@@ -27,7 +30,7 @@ namespace Import.RunnableClasses
         /// </summary>
         public override void Run()
         {
-            StockDataService = new StockDataService(CON.APIKEY, CON.CONNECTIONSTRING);
+            StockDataService = new StockDataService(CON);
             CheckForFiles();
         }
 
@@ -42,14 +45,28 @@ namespace Import.RunnableClasses
             while (true)
             {
                 rESXFilePath = Console.ReadLine();
+
                 if (File.Exists(rESXFilePath))
+                {
                     break;
+                }
                 else
+                {
+                    var rESXFile = Assembly.GetExecutingAssembly();
+                    var rESXFileName = rESXFile.GetManifestResourceNames().FirstOrDefault(X => X.Contains(rESXFilePath));
+                    if (rESXFileName != null)
+                    {
+                        rESXFilePath = rESXFileName;
+                        break;
+                    }
+
                     Console.WriteLine(Labels.FileDoesntExists);
+                }                
             }
 
             FileReaderBase rESXFiles = FileReaderFactory.GetReader(rESXFilePath);
             rESXFiles.GetFiles().ForEach(async F => await StockDataService.FetchAndStoreStockData(F));
+            StockDataService.ImportDataToDB();
         }
     }
 }

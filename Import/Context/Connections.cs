@@ -2,6 +2,9 @@
 
 namespace Import.Context
 {
+    /// <summary>
+    /// class that contains the connection information for the database and the api key
+    /// </summary>
     public class Connections
     {
         [JsonProperty("APIKEY")]

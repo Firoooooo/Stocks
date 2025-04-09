@@ -8,7 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Files\NASDAQ.csv" />
+    <None Remove="Files\NASDAQ.txt" />
+    <None Remove="Files\NASDAQ.xlsx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="Configs\Config.json" />
+    <EmbeddedResource Include="Files\NASDAQ.csv" />
+    <EmbeddedResource Include="Files\NASDAQ.txt" />
+    <EmbeddedResource Include="Files\NASDAQ.xlsx" />
   </ItemGroup>
 
   <ItemGroup>

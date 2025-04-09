@@ -1,4 +1,8 @@
-﻿namespace Import.FileHandler
+﻿using Import.Resources;
+using Newtonsoft.Json;
+using System.Reflection;
+
+namespace Import.FileHandler
 {
     /// <summary>
     /// class to read the csv file
@@ -6,6 +10,7 @@
     public class CSV : FileReaderBase
     {
         public string RESXFile { get; set; }
+
 
         /// <summary>
         /// constructor  to receive and process the stream
@@ -23,18 +28,40 @@
         /// </summary>
         public override void ReadRESXFiles()
         {
-            using (StreamReader xMLReader = new StreamReader(RESXFile))
+            if (File.Exists(RESXFile))
             {
-                string cSVValue = xMLReader.ReadToEnd();
-                cSVValue = cSVValue.Replace("\"", "").Replace("\"\"", "");
-                string[] cSVSplittedValue = cSVValue.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-
-                cSVSplittedValue
-                    .Where(V => !String.IsNullOrWhiteSpace(V))
-                    .Select(V => V.Replace(",", ""))
-                    .ToList()
-                    .ForEach(V => Stocks.Add(V));
+                using (StreamReader rESXStreamReader = new StreamReader(RESXFile))
+                {
+                    string rESXContent = rESXStreamReader.ReadToEnd();
+                    ParseAndAddStocks(rESXContent);
+                }
             }
+            else
+            {
+                using (Stream rESXFile = Assembly.GetExecutingAssembly().GetManifestResourceStream(RESXFile))
+                {
+                    using (StreamReader rESXReader = new StreamReader(rESXFile))
+                    {
+                        string rESXContent = rESXReader.ReadToEnd();
+                        ParseAndAddStocks(rESXContent);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// parses the csv file and adds the stocks to the list
+        /// </summary>
+        /// <param name="rESXContent"></param>
+        private void ParseAndAddStocks(string rESXContent)
+        {
+            rESXContent = rESXContent.Replace("\"", "").Replace("\"\"", "");
+            string[] rESXSplitted = rESXContent.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            rESXSplitted
+                .Where(V => !String.IsNullOrWhiteSpace(V))
+                .Select(V => V.Replace(",", ""))
+                .ToList()
+                .ForEach(V => Stocks.Add(V));
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Import
 
 
         /// <summary>
-        /// constructor
+        /// constructor that receives the context
         /// </summary>
         public RunnableClassBase(Connections _cON)
         {
@@ -23,7 +23,5 @@ namespace Import
         /// run method of the runnable classes
         /// </summary>
         public abstract void Run();
-
-        
     }
 }

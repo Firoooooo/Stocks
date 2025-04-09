@@ -83,7 +83,7 @@ namespace Import
                     new SchemaBuilder(_cON).Run();
                     break;
 
-                    // Weitere Operationen hier hinzufügen, falls notwendig
+                // Weitere Operationen hier hinzufügen, falls notwendig
             }
         }
     }

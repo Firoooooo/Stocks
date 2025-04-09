@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using System.Reflection;
 
 namespace Import.FileHandler
 {
@@ -8,6 +9,7 @@ namespace Import.FileHandler
     public class XLSX : FileReaderBase
     {
         public string RESXFile { get; set; }
+
 
         /// <summary>
         /// constructor  to receive and process the stream
@@ -25,13 +27,34 @@ namespace Import.FileHandler
         /// </summary>
         public override void ReadRESXFiles()
         {
-            using (var xLSXWorkbook = new XLWorkbook(RESXFile))
+            if (File.Exists(RESXFile))
+            {
+                using (FileStream xLSXWorkbook = new FileStream(RESXFile, FileMode.Open, FileAccess.Read))
+                {
+                    ParseAndAddStocks(xLSXWorkbook);
+                }
+            }
+            else
+            {
+                using (Stream rESXFile = Assembly.GetExecutingAssembly().GetManifestResourceStream(RESXFile))
+                {
+                    ParseAndAddStocks(rESXFile);
+                }
+            }
+        }
+
+        /// <summary>
+        /// parses the xlsx file and adds the stocks to the list
+        /// </summary>
+        /// <param name="rESXFile">ressource stream</param>
+        private void ParseAndAddStocks(Stream rESXFile)
+        {
+            using (var xLSXWorkbook = new XLWorkbook(rESXFile))
             {
                 var xLSXWorksheet = xLSXWorkbook.Worksheet(1);
                 var xLSXRange = xLSXWorksheet.RangeUsed();
                 var xLSXRows = xLSXRange.RowCount();
                 var xLSXColumns = xLSXRange.ColumnCount();
-
                 for (int xLSXRow = 1; xLSXRow <= xLSXRows; xLSXRow++)
                 {
                     for (int xLSXColumn = 1; xLSXColumn <= xLSXColumns; xLSXColumn++)
