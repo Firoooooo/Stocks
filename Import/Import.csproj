@@ -10,18 +10,15 @@
   <ItemGroup>
     <None Remove="Files\NASDAQ.csv" />
     <None Remove="Files\NASDAQ.txt" />
-    <None Remove="Files\NASDAQ.xlsx" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Configs\Config.json" />
-    <EmbeddedResource Include="Files\NASDAQ.csv" />
-    <EmbeddedResource Include="Files\NASDAQ.txt" />
-    <EmbeddedResource Include="Files\NASDAQ.xlsx" />
+    <EmbeddedResource Include="Files\Stock\Stock.csv" />
+    <EmbeddedResource Include="Files\Stock\Stock.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ClosedXML" Version="0.104.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.3" />
     <PackageReference Include="MySql.Data" Version="9.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -41,6 +38,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Labels.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Files\PortfolioValueHistory\" />
+    <Folder Include="Files\UserPortfolio\" />
+    <Folder Include="Files\Transaction\" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 {
   "APIKEY": "EZC8NLKMV664QLL3",
-  "CONNECTIONSTRING": "Server=localhost;Port=3306;User Id=root;Password=Password;",
+  "CONNECTIONSTRING": "Server=localhost;Port=3306;User Id=root;Password=Password;AllowLoadLocalInfile=true;",
   "DATABASENAME": "Stocks"
 }

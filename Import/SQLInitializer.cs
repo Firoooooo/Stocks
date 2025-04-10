@@ -1,5 +1,6 @@
 ﻿using Import.Context;
 using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace Import
 {
@@ -35,8 +36,11 @@ namespace Import
         /// </summary>
         public void Initialize()
         {
+            DataTable sQLDataTable;
+
             CreateDatabase();
-            ExecuteQuery($"USE {CON.DATABASENAME};", SQLConnection);
+            ExecuteQuery($"USE {CON.DATABASENAME};"
+                , SQLConnection);
 
             ExecuteQuery(@"
                 CREATE TABLE IF NOT EXISTS USER (
@@ -97,23 +101,76 @@ namespace Import
         }
 
         /// <summary>
-        /// loads corresponding data into the tables
-        /// </summary>
-        public void LoadDataIntoDatabase()
-        {
-
-        }
-
-        /// <summary>
         /// executes the query
         /// </summary>
         /// <param name="_sQLQuery">query to execute</param>
         public static void ExecuteQuery(string _sQLQuery, MySqlConnection _sQLCon)
         {
-            using (MySqlCommand sQLCom = new MySqlCommand(_sQLQuery, _sQLCon))
+            try
             {
-                sQLCom.ExecuteNonQuery();
+                using (MySqlTransaction sQLTransaction = _sQLCon.BeginTransaction())
+                using (MySqlCommand sQLCom = new MySqlCommand(_sQLQuery, _sQLCon))
+                {
+                    sQLCom.ExecuteNonQuery();
+                    sQLTransaction.Commit();
+                }
             }
+            catch (Exception EX)
+            {
+                Console.WriteLine($"Error: {EX.Message}");
+            }
+        }
+
+        /// <summary>
+        /// inserts the data into the user table
+        /// </summary>
+        /// <param name="_rESXFile">file name</param>
+        public void InsertInUser(string _rESXFile)
+        {
+            ExecuteQuery($"USE {CON.DATABASENAME};"
+                , SQLConnection);
+
+            // Der Connection String muss angepasst werden, sodass am Ende des Strings "AllowLoadLocalInfile=TRUE" steht . Außerdem muss in der MY.INI der MySQL-Server der Parameter "LOCAL_INFILE=1" gesetzt werden
+            if (Path.GetExtension(_rESXFile).ToUpper() == ".CSV")
+                ExecuteQuery($"LOAD DATA LOCAL INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE User FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (USERNAME, EMAIL, PASSWORDHASH, BALANCE);", SQLConnection);
+            if (Path.GetExtension(_rESXFile).ToUpper() == ".TXT")
+                ExecuteQuery($"LOAD DATA LOCAL INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE User FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\r\n' (USERNAME, EMAIL, PASSWORDHASH, BALANCE);", SQLConnection);
+        }
+
+        /// <summary>
+        /// inserts the data into the portfolio value history table
+        /// </summary>
+        /// <param name="_rESXFile"></param>
+        public void InsertInPortfolioValueHistory(string _rESXFile)
+        {
+
+        }
+
+        /// <summary>
+        /// inserts the data into the user transaction table
+        /// </summary>
+        /// <param name="_rESXFile"></param>
+        public void InsertInTransaction(string _rESXFile)
+        {
+
+        }
+
+        /// <summary>
+        /// inserts the data into the user portfolio table
+        /// </summary>
+        /// <param name="_rESXFile"></param>
+        public void InsertInUserPortfolio(string _rESXFile)
+        {
+
+        }
+
+        /// <summary>
+        /// inserts the data into the user stock table
+        /// </summary>
+        /// <param name="_rESXFile"></param>
+        public void InsertInStock(string _rESXFile)
+        {
+
         }
     }
 }

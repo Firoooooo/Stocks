@@ -25,9 +25,6 @@ namespace Import.Factories
                 case ".CSV":
                     return new CSV(_rESXFile);
 
-                case ".XLSX":
-                    return new XLSX(_rESXFile);
-
                 default:
                     throw new ArgumentException(Labels.FileHandlingException);
             }

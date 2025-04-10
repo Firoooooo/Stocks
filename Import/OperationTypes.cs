@@ -18,6 +18,36 @@
         /// <summary>
         /// import the schema to the database
         /// </summary>
-        SchemaBuilder
+        SchemaBuilder,
+
+        /// <summary>
+        /// visualizes all upload possibilities
+        /// </summary>
+        UploadHandler,
+
+        /// <summary>
+        /// import the transactions to the database
+        /// </summary>
+        Stock,
+
+        /// <summary>
+        /// import the portfolio to the database
+        /// </summary>
+        PortfolioValueHistory,
+
+        /// <summary>
+        /// import the portfolio to the database
+        /// </summary>
+        Transaction,
+
+        /// <summary>
+        /// import the portfolio to the database
+        /// </summary>
+        User,
+
+        /// <summary>
+        /// import the portfolio to the database
+        /// </summary>
+        UserPortfolio
     }
 }

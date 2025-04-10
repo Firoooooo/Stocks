@@ -7,9 +7,6 @@ namespace Import.ImportHandler
     /// </summary>
     public class TXT : FileReaderBase
     {
-        public string RESXFile { get; set; }
-
-
         /// <summary>
         /// constructor  to receive and process the stream
         /// </summary>
@@ -18,13 +15,13 @@ namespace Import.ImportHandler
         {
             RESXFile = _rESXFile;
 
-            ReadRESXFiles();
+            ReadRESXFile();
         }
 
         /// <summary>
         /// reads the txt file
         /// </summary>
-        public override void ReadRESXFiles()
+        public override void ReadRESXFile()
         {
             if (File.Exists(RESXFile))
             {

@@ -32,14 +32,14 @@ namespace Import
 
             var rUNNABClasses = Assembly.GetExecutingAssembly().GetTypes()
                             .Where(T => T.GetCustomAttributes(typeof(RunnableClassAttribute), false).Any())
-                            .Select(T => new
+                            .Select(T => new TypeWithAttribute
                             {
                                 Type = T,
                                 Attribute = (RunnableClassAttribute)T.GetCustomAttributes(typeof(RunnableClassAttribute), false).FirstOrDefault()
                             })
                             .OrderBy(A => A.Attribute.TransactionNumber)
                             .ToList();
-            rUNNABClasses.Add(new { Type = typeof(Program), Attribute = new RunnableClassAttribute(rUNNABClasses.Count + 1, Labels.EndProgram) });
+            rUNNABClasses.Add(new TypeWithAttribute{ Type = typeof(Program), Attribute = new RunnableClassAttribute(rUNNABClasses.Count + 1, Labels.EndProgram) });
 
             while (true)
             {
@@ -66,19 +66,13 @@ namespace Import
         {
             switch ((OperationTypes)Enum.Parse(typeof(OperationTypes), _eXCType.Name))
             {
-                case OperationTypes.DBImportStacks:
-                    new DBImportStacks(_cON).Run();
-                    break;
-
-                case OperationTypes.ClearStocks:
-                    new ClearStocks(_cON).Run();
-                    break;
-
                 case OperationTypes.SchemaBuilder:
                     new SchemaBuilder(_cON).Run();
                     break;
 
-                // Weitere Operationen hier hinzufügen, falls notwendig
+                case OperationTypes.UploadHandler:
+                    new UploadHandler(_cON).Run();
+                    break;
             }
         }
     }

@@ -2,6 +2,7 @@
 using Import.Resources;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json.Linq;
+using System.Data;
 using System.Diagnostics;
 
 namespace Import

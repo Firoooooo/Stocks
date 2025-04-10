@@ -7,7 +7,7 @@ namespace Import.FileHandler
     /// </summary>
     public class CSV : FileReaderBase
     {
-        public string RESXFile { get; set; }
+        
 
 
         /// <summary>
@@ -18,13 +18,13 @@ namespace Import.FileHandler
         {
             RESXFile = _rESXFile;
 
-            ReadRESXFiles();
+            ReadRESXFile();
         }
 
         /// <summary>
         /// reads the csv file
         /// </summary>
-        public override void ReadRESXFiles()
+        public override void ReadRESXFile()
         {
             if (File.Exists(RESXFile))
             {
@@ -60,6 +60,14 @@ namespace Import.FileHandler
                 .Select(V => V.Replace(",", ""))
                 .ToList()
                 .ForEach(V => Stocks.Add(V));
+        }
+
+        /// <summary>
+        /// reads the files and then transmits it to the database
+        /// </summary>
+        public void ReadRESXFiles()
+        {
+
         }
     }
 }
