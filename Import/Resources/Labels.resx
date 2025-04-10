@@ -123,6 +123,12 @@
   <data name="Close" xml:space="preserve">
     <value>4. close</value>
   </data>
+  <data name="DatabaseConFailed" xml:space="preserve">
+    <value>Fehler bei der Verbindung zur Datenbank</value>
+  </data>
+  <data name="DataImportFailed" xml:space="preserve">
+    <value>Fehler beim Importieren der Daten</value>
+  </data>
   <data name="EndProgram" xml:space="preserve">
     <value>Programm beenden</value>
   </data>

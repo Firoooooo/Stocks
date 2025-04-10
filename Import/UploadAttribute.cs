@@ -1,0 +1,24 @@
+﻿namespace Import
+{
+    /// <summary>
+    /// the attribute that identifies a upload class so that they can be collected and then displayed together in an execztion window
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    public class UploadAttribute : Attribute
+    {
+        public int TransactionNumber { get; set; }
+        public string Name { get; set; }
+
+
+        /// <summary>
+        /// extend the constructor with which the classes must be initialized
+        /// </summary>
+        /// <param name="_tRANSNum">transaction number</param>
+        /// <param name="_nAME">name of the job</param>
+        public UploadAttribute(int _tRANSNum, string _nAME)
+        {
+            TransactionNumber = _tRANSNum;
+            Name = _nAME;
+        }
+    }
+}

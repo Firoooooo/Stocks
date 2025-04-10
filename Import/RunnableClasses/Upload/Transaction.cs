@@ -1,18 +1,15 @@
 ﻿using Import.Context;
 
-namespace Import.RunnableClasses
+namespace Import.RunnableClasses.Upload
 {
-    [RunnableClassAttribute(1, "Initialisierung der Datenbankstruktur einschließlich der Tabellen und Referenzen")]
-    public class SchemaBuilder : RunnableClassBase
+    [Upload(4, "Importiert Transaktionsdaten und speichert diese in der Transactions Tabelle")]
+    public class Transaction : RunnableClassBase
     {
-        public Connections CON { get; set; }
-
-         
         /// <summary>
         /// constructor that receives the context and passed it on to the base class
         /// </summary>
         /// <param name="_cON">connection context</param>
-        public SchemaBuilder(Connections _cON) 
+        public Transaction(Connections _cON)
             : base(_cON)
         {
             CON = _cON;
@@ -23,8 +20,9 @@ namespace Import.RunnableClasses
         /// </summary>
         public override void Run()
         {
+            FileReaderBase rESXFiles = GetRESXReader();
             SQLInitializer sQLInitializer = new SQLInitializer(CON);
-            sQLInitializer.Initialize();
+            sQLInitializer.InsertInTransaction(rESXFiles.RESXFile);
         }
     }
 }

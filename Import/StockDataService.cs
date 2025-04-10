@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Diagnostics;
+﻿using Import.Context;
 using Import.Resources;
-using System.Net.Http;
+using MySql.Data.MySqlClient;
+using Newtonsoft.Json.Linq;
+using System.Data;
+using System.Diagnostics;
 
 namespace Import
 {
@@ -10,8 +12,7 @@ namespace Import
     /// </summary>
     public class StockDataService
     {
-        private string APIKey { get; set; }
-        private string ConnectionString { get; set; }
+        private Connections CON { get; set; }
         private JObject TimeSeriesData { get; set; }
         private HttpClient HTTPClient { get; set; }
         public List<StockPrice> StockPrices { get; set; }
@@ -19,14 +20,12 @@ namespace Import
 
 
         /// <summary>
-        /// overwrite the cosntrucutor with the api key and connection string
+        /// constructor that receives the context and creates an instance of the client class to execute the request
         /// </summary>
-        /// <param name="_API">api key</param>
-        /// <param name="_CON">connection string</param>
-        public StockDataService(string _API, string _CON)
+        /// <param name="_cON">context class</param>
+        public StockDataService(Connections _cON)
         {
-            APIKey = _API;
-            ConnectionString = _CON; // Evtl auslagern in eine andere Klasse
+            CON = _cON;
             HTTPClient = new HttpClient();
         }
 
@@ -39,7 +38,7 @@ namespace Import
         { 
             try
             {
-                string aPIURL = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={_nASDAQS}&apikey={APIKey}";
+                string aPIURL = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={_nASDAQS}&apikey={CON.APIKEY}";
                 HttpResponseMessage rESP = HTTPClient.GetAsync(aPIURL).Result;
 
                 if (!rESP.IsSuccessStatusCode)
@@ -64,19 +63,70 @@ namespace Import
             JObject jSONParsed = JObject.Parse(_jSON);
             TimeSeriesData = jSONParsed[Resources.Labels.TimeSeriesData] as JObject;
 
-            if (TimeSeriesData != null)
+            if (TimeSeriesData != null && TimeSeriesData.Properties().Any())
             {
-                StockPrices.AddRange(TimeSeriesData.Properties().Select(D => new StockPrice
+                StockPrices.Add(new StockPrice
                 {
                     Symbol = jSONParsed[Resources.Labels.MetaData][Resources.Labels.Symbol].ToString(),
-                    Date = DateTime.Parse(D.Name),
-                    Open = decimal.Parse(D.Value[Resources.Labels.Open].ToString()),
-                    High = decimal.Parse(D.Value[Resources.Labels.High].ToString()),
-                    Low = decimal.Parse(D.Value[Resources.Labels.Low].ToString()),
-                    Close = decimal.Parse(D.Value[Resources.Labels.Close].ToString()),
-                    Volume = long.Parse(D.Value[Resources.Labels.Volume].ToString())
-                }));
+                    Date = DateTime.Parse(TimeSeriesData.Properties().First().Name),
+                    Open = decimal.Parse(TimeSeriesData.Properties().First().Value[Resources.Labels.Open].ToString()),
+                    High = decimal.Parse(TimeSeriesData.Properties().First().Value[Resources.Labels.High].ToString()),
+                    Low = decimal.Parse(TimeSeriesData.Properties().First().Value[Resources.Labels.Low].ToString()),
+                    Close = decimal.Parse(TimeSeriesData.Properties().First().Value[Resources.Labels.Close].ToString()),
+                    Volume = long.Parse(TimeSeriesData.Properties().First().Value[Resources.Labels.Volume].ToString())
+                });
             }
         }
+
+        /// <summary>
+        /// inserts the stock data into the database
+        /// </summary>
+        public void ImportDataToDB()
+        {
+            try
+            {
+                using (MySqlConnection sQLCon = new MySqlConnection(CON.CONNECTIONSTRING))
+                {
+                    sQLCon.Open();
+                    SQLInitializer.ExecuteQuery($"USE {CON.DATABASENAME};", sQLCon);
+
+                    string sQLQuery = @"INSERT INTO Stock(SYMBOL, DATE, OPEN, HIGH, LOW, CLOSE, VOLUME) VALUES (@SYMBOL, @DATE, @OPEN, @HIGH, @LOW, @CLOSE, @VOLUME) ON DUPLICATE KEY UPDATE OPEN = @OPEN, HIGH = @HIGH, LOW = @LOW, CLOSE = @CLOSE, VOLUME = @VOLUME, LASTUPDATED = CURRENT_TIMESTAMP;";
+
+                    using (MySqlTransaction sQLTransaction = sQLCon.BeginTransaction())
+                    using (MySqlCommand sQLCom = new MySqlCommand(sQLQuery, sQLCon, sQLTransaction))
+                    {
+                        try
+                        {
+                            StockPrices.ForEach(P =>
+                            {
+                                sQLCom.Parameters.Clear();
+
+                                sQLCom.Parameters.AddWithValue("@SYMBOL", P.Symbol);
+                                sQLCom.Parameters.AddWithValue("@DATE", P.Date);
+                                sQLCom.Parameters.AddWithValue("@OPEN", P.Open);
+                                sQLCom.Parameters.AddWithValue("@HIGH", P.High);
+                                sQLCom.Parameters.AddWithValue("@LOW", P.Low);
+                                sQLCom.Parameters.AddWithValue("@CLOSE", P.Close);
+                                sQLCom.Parameters.AddWithValue("@VOLUME", P.Volume);
+
+                                sQLCom.ExecuteNonQuery();
+                            });
+
+                            sQLTransaction.Commit();
+                        }
+                        catch (Exception EX)
+                        {
+                            sQLTransaction.Rollback();
+                            Console.WriteLine($"{Import.Resources.Labels.DataImportFailed} {EX.Message}");
+                        }
+                    }
+                }
+            }
+            catch (Exception EX)
+            {
+                Console.WriteLine($"{Import.Resources.Labels.DatabaseConFailed} {EX.Message}");
+            }
+        }
+
     }
 }

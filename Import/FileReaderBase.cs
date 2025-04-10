@@ -7,6 +7,8 @@
     {
         public List<string> Stocks { get; set; } 
             = new List<string>();
+        public string RESXFile { get; set; }
+
 
         /// <summary>
         /// returns the curr stocks
@@ -17,6 +19,6 @@
         /// <summary>
         /// reads the files
         /// </summary>
-        public abstract void ReadRESXFiles();
+        public abstract void ReadRESXFile();
     }
 }
