@@ -14,8 +14,6 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Configs\Config.json" />
-    <EmbeddedResource Include="Files\Stock\Stock.csv" />
-    <EmbeddedResource Include="Files\Stock\Stock.txt" />
   </ItemGroup>
 
   <ItemGroup>

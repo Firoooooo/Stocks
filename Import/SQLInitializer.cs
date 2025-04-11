@@ -122,6 +122,28 @@ namespace Import
         }
 
         /// <summary>
+        /// returns the secure file path
+        /// </summary>
+        /// <param name="_rESXFile">file path</param>
+        /// <returns>string</returns>
+        public string GetSecureFilePriv(string _rESXFile)
+        {
+            string sQLQuery = "SHOW VARIABLES LIKE 'SECURE_FILE_PRIV';";
+            using (MySqlCommand sQLCommand = new MySqlCommand(sQLQuery, SQLConnection))
+            {
+                using (MySqlDataReader sQLReader = sQLCommand.ExecuteReader())
+                {
+                    if (sQLReader.Read())
+                    {
+                        return sQLReader.GetString(1);
+                    }
+                }
+            }
+
+            return String.Empty;
+        }
+
+        /// <summary>
         /// inserts the data into the user table
         /// </summary>
         /// <param name="_rESXFile">file name</param>
@@ -130,11 +152,17 @@ namespace Import
             ExecuteQuery($"USE {CON.DATABASENAME};"
                 , SQLConnection);
 
-            // Der Connection String muss angepasst werden, sodass am Ende des Strings "AllowLoadLocalInfile=TRUE" steht . Außerdem muss in der MY.INI der MySQL-Server der Parameter "LOCAL_INFILE=1" gesetzt werden
+            string sQLSecure = GetSecureFilePriv(_rESXFile);
+            string sQLDestination = Path.Combine(sQLSecure, Path.GetFileName(_rESXFile));
+            File.Copy(_rESXFile, sQLDestination, true);
+            _rESXFile = sQLDestination;
+
             if (Path.GetExtension(_rESXFile).ToUpper() == ".CSV")
-                ExecuteQuery($"LOAD DATA LOCAL INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE User FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (USERNAME, EMAIL, PASSWORDHASH, BALANCE);", SQLConnection);
+                ExecuteQuery($"LOAD DATA INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE User FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (USERNAME, EMAIL, PASSWORDHASH, BALANCE);", SQLConnection);
             if (Path.GetExtension(_rESXFile).ToUpper() == ".TXT")
-                ExecuteQuery($"LOAD DATA LOCAL INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE User FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\r\n' (USERNAME, EMAIL, PASSWORDHASH, BALANCE);", SQLConnection);
+                ExecuteQuery($"LOAD DATA INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE User FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\r\n' (USERNAME, EMAIL, PASSWORDHASH, BALANCE);", SQLConnection);
+
+            File.Delete(_rESXFile);
         }
 
         /// <summary>
@@ -143,7 +171,20 @@ namespace Import
         /// <param name="_rESXFile"></param>
         public void InsertInPortfolioValueHistory(string _rESXFile)
         {
+            ExecuteQuery($"USE {CON.DATABASENAME};"
+                , SQLConnection);
 
+            string sQLSecure = GetSecureFilePriv(_rESXFile);
+            string sQLDestination = Path.Combine(sQLSecure, Path.GetFileName(_rESXFile));
+            File.Copy(_rESXFile, sQLDestination, true);
+            _rESXFile = sQLDestination;
+
+            if (Path.GetExtension(_rESXFile).ToUpper() == ".CSV")
+                ExecuteQuery($"LOAD DATA INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE PortfolioValueHistory FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (USERID, TOTALVALUE);", SQLConnection);
+            if (Path.GetExtension(_rESXFile).ToUpper() == ".TXT")
+                ExecuteQuery($"LOAD DATA INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE PortfolioValueHistory FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\r\n' (USERID, TOTALVALUE);", SQLConnection);
+
+            File.Delete(_rESXFile);
         }
 
         /// <summary>
@@ -152,7 +193,20 @@ namespace Import
         /// <param name="_rESXFile"></param>
         public void InsertInTransaction(string _rESXFile)
         {
+            ExecuteQuery($"USE {CON.DATABASENAME};"
+               , SQLConnection);
 
+            string sQLSecure = GetSecureFilePriv(_rESXFile);
+            string sQLDestination = Path.Combine(sQLSecure, Path.GetFileName(_rESXFile));
+            File.Copy(_rESXFile, sQLDestination, true);
+            _rESXFile = sQLDestination;
+
+            if (Path.GetExtension(_rESXFile).ToUpper() == ".CSV")
+                ExecuteQuery($"LOAD DATA INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE Transaction FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (USERID, STOCKID, TRANSACTIONTYPE, QUANTITY, PRICE);", SQLConnection);
+            if (Path.GetExtension(_rESXFile).ToUpper() == ".TXT")
+                ExecuteQuery($"LOAD DATA INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE Transaction FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\r\n' (USERID, STOCKID, TRANSACTIONTYPE, QUANTITY, PRICE);", SQLConnection);
+
+            File.Delete(_rESXFile);
         }
 
         /// <summary>
@@ -161,16 +215,20 @@ namespace Import
         /// <param name="_rESXFile"></param>
         public void InsertInUserPortfolio(string _rESXFile)
         {
+            ExecuteQuery($"USE {CON.DATABASENAME};"
+               , SQLConnection);
 
-        }
+            string sQLSecure = GetSecureFilePriv(_rESXFile);
+            string sQLDestination = Path.Combine(sQLSecure, Path.GetFileName(_rESXFile));
+            File.Copy(_rESXFile, sQLDestination, true);
+            _rESXFile = sQLDestination;
 
-        /// <summary>
-        /// inserts the data into the user stock table
-        /// </summary>
-        /// <param name="_rESXFile"></param>
-        public void InsertInStock(string _rESXFile)
-        {
+            if (Path.GetExtension(_rESXFile).ToUpper() == ".CSV")
+                ExecuteQuery($"LOAD DATA INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE UserPortfolio FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (USERID, STOCKID, QUANTITY);", SQLConnection);
+            if (Path.GetExtension(_rESXFile).ToUpper() == ".TXT")
+                ExecuteQuery($"LOAD DATA INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE UserPortfolio FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\r\n' (USERID, STOCKID, QUANTITY);", SQLConnection);
 
+            File.Delete(_rESXFile);
         }
     }
 }
