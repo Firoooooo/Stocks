@@ -7,9 +7,6 @@ namespace Import.FileHandler
     /// </summary>
     public class CSV : FileReaderBase
     {
-        
-
-
         /// <summary>
         /// constructor  to receive and process the stream
         /// </summary>
