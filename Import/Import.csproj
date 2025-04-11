@@ -10,10 +10,30 @@
   <ItemGroup>
     <None Remove="Files\NASDAQ.csv" />
     <None Remove="Files\NASDAQ.txt" />
+    <None Remove="Files\PortfolioValueHistory\PortfolioValueHistory.csv" />
+    <None Remove="Files\PortfolioValueHistory\PortfolioValueHistory.txt" />
+    <None Remove="Files\Stock\Stock.csv" />
+    <None Remove="Files\Stock\Stock.txt" />
+    <None Remove="Files\Transaction\Transaction.csv" />
+    <None Remove="Files\Transaction\Transaction.txt" />
+    <None Remove="Files\UserPortfolio\UserPortfolio.csv" />
+    <None Remove="Files\UserPortfolio\UserPortfolio.txt" />
+    <None Remove="Files\User\User.csv" />
+    <None Remove="Files\User\User.txt" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Configs\Config.json" />
+    <EmbeddedResource Include="Files\PortfolioValueHistory\PortfolioValueHistory.csv" />
+    <EmbeddedResource Include="Files\PortfolioValueHistory\PortfolioValueHistory.txt" />
+    <EmbeddedResource Include="Files\Stock\Stock.csv" />
+    <EmbeddedResource Include="Files\Stock\Stock.txt" />
+    <EmbeddedResource Include="Files\Transaction\Transaction.csv" />
+    <EmbeddedResource Include="Files\Transaction\Transaction.txt" />
+    <EmbeddedResource Include="Files\UserPortfolio\UserPortfolio.csv" />
+    <EmbeddedResource Include="Files\UserPortfolio\UserPortfolio.txt" />
+    <EmbeddedResource Include="Files\User\User.csv" />
+    <EmbeddedResource Include="Files\User\User.txt" />
   </ItemGroup>
 
   <ItemGroup>
