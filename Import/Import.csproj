@@ -14,8 +14,6 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Configs\Config.json" />
-    <EmbeddedResource Include="Files\Stock\Stock.csv" />
-    <EmbeddedResource Include="Files\Stock\Stock.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,12 +36,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Labels.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Files\PortfolioValueHistory\" />
-    <Folder Include="Files\UserPortfolio\" />
-    <Folder Include="Files\Transaction\" />
   </ItemGroup>
 
 </Project>

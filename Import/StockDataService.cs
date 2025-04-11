@@ -90,7 +90,7 @@ namespace Import
                     sQLCon.Open();
                     SQLInitializer.ExecuteQuery($"USE {CON.DATABASENAME};", sQLCon);
 
-                    string sQLQuery = @"INSERT INTO Stock(SYMBOL, DATE, OPEN, HIGH, LOW, CLOSE, VOLUME) VALUES (@SYMBOL, @DATE, @OPEN, @HIGH, @LOW, @CLOSE, @VOLUME) ON DUPLICATE KEY UPDATE OPEN = @OPEN, HIGH = @HIGH, LOW = @LOW, CLOSE = @CLOSE, VOLUME = @VOLUME, LASTUPDATED = CURRENT_TIMESTAMP;";
+                    string sQLQuery = @"INSERT INTO Stock (SYMBOL, DATE, OPEN, HIGH, LOW, CLOSE, VOLUME) VALUES (@SYMBOL, @DATE, @OPEN, @HIGH, @LOW, @CLOSE, @VOLUME) ON DUPLICATE KEY UPDATE OPEN = @OPEN, HIGH = @HIGH, LOW = @LOW, CLOSE = @CLOSE, VOLUME = @VOLUME, LASTUPDATED = CURRENT_TIMESTAMP;";
 
                     using (MySqlTransaction sQLTransaction = sQLCon.BeginTransaction())
                     using (MySqlCommand sQLCom = new MySqlCommand(sQLQuery, sQLCon, sQLTransaction))
