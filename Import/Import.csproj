@@ -38,10 +38,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Files\PortfolioValueHistory\" />
-    <Folder Include="Files\UserPortfolio\" />
-    <Folder Include="Files\Transaction\" />
-  </ItemGroup>
-
 </Project>
