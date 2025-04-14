@@ -60,7 +60,6 @@ namespace Import
         /// <summary>
         /// executes he corresponding operation
         /// </summary>
-        /// <param name="_cON">context class which includes the informations needed during the operation</param>
         /// <param name="_eXCType">attribute of the class</param>
         private static void ExecuteOperation(Type _eXCType)
         {

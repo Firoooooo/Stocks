@@ -34,8 +34,6 @@ namespace Import
         /// </summary>
         public void Initialize()
         {
-            DataTable sQLDataTable;
-
             CreateDatabase();
             ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"
                 , SQLConnection);
@@ -166,7 +164,7 @@ namespace Import
         /// <summary>
         /// inserts the data into the portfolio value history table
         /// </summary>
-        /// <param name="_rESXFile"></param>
+        /// <param name="_rESXFile">file path</param>
         public void InsertInPortfolioValueHistory(string _rESXFile)
         {
             ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"
@@ -188,7 +186,7 @@ namespace Import
         /// <summary>
         /// inserts the data into the user transaction table
         /// </summary>
-        /// <param name="_rESXFile"></param>
+        /// <param name="_rESXFile">file path</param>
         public void InsertInTransaction(string _rESXFile)
         {
             ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"
@@ -210,7 +208,7 @@ namespace Import
         /// <summary>
         /// inserts the data into the user portfolio table
         /// </summary>
-        /// <param name="_rESXFile"></param>
+        /// <param name="_rESXFile">file path</param>
         public void InsertInUserPortfolio(string _rESXFile)
         {
             ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"

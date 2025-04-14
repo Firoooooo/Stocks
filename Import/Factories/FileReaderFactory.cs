@@ -14,7 +14,7 @@ namespace Import.Factories
         /// </summary>
         /// <param name="_rESXFile">resx file path</param>
         /// <returns>FileReaderBase</returns>
-        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ArgumentException">exc</exception>
         public static FileReaderBase GetReader(string _rESXFile)
         {
             switch (Path.GetExtension(_rESXFile).ToUpper())
