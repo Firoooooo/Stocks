@@ -1,6 +1,4 @@
-﻿using Import.Singleton;
-
-namespace Import.RunnableClasses.Upload
+﻿namespace Import.RunnableClasses.Upload
 {
     [Upload(2, "Importiert Benutzerdaten und speichert diese in der User Tabelle")]
     public class User : RunnableClassBase

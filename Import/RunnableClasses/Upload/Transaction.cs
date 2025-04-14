@@ -1,6 +1,4 @@
-﻿using Import.Singleton;
-
-namespace Import.RunnableClasses.Upload
+﻿namespace Import.RunnableClasses.Upload
 {
     [Upload(4, "Importiert Transaktionsdaten und speichert diese in der Transactions Tabelle")]
     public class Transaction : RunnableClassBase
