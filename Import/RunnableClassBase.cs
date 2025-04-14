@@ -1,6 +1,5 @@
 ﻿using Import.Factories;
 using Import.Resources;
-using Import.Singleton;
 using System.Reflection;
 
 namespace Import

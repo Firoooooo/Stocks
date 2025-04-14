@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Import;
-using Import.Singleton;
-
-namespace Import.RunnableClasses.Upload
+﻿namespace Import.RunnableClasses.Upload
 {
     [Upload(5, "Importiert Historische Portflio Werte und speichert diese in der Portfolio Value History Tabelle")]
     public class PortfolioValueHistory : RunnableClassBase

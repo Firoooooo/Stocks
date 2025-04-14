@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Import.Singleton
+﻿namespace Import.Singleton
 {
     /// <summary>
     /// singleton class to ensure that only one instance of the class is created

@@ -1,6 +1,4 @@
-﻿using Import.Singleton;
-
-namespace Import.RunnableClasses.Upload
+﻿namespace Import.RunnableClasses.Upload
 {
     [Upload(3, "Importiert Portfolio Daten und speichert sie in der User Portfolio Tabelle")]
     public class UserPortfolio : RunnableClassBase
