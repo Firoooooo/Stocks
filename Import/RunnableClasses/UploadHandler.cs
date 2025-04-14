@@ -8,19 +8,6 @@ namespace Import
     [RunnableClassAttribute(2, "Importoptionen anzeigen, um die Dateien in die Ziel Tabellen einzuspielen")]
     public class UploadHandler : RunnableClassBase
     {
-        public Connections CON { get; set; }
-
-
-        /// <summary>
-        /// constructor that receives the context and passed it on to the base class
-        /// </summary>
-        /// <param name="_cON">connection context</param>
-        public UploadHandler(Connections _cON)
-            : base(_cON)
-        {
-            CON = _cON;
-        }
-
         /// <summary>
         /// run method of the runnable classes
         /// </summary>
@@ -48,7 +35,7 @@ namespace Import
                         break;
 
                     var cLASS = rUNNABClasses.FirstOrDefault(X => X.Attribute.TransactionNumber == eXCNumber);
-                    ExecuteOperation(CON, cLASS.Type);
+                    ExecuteOperation(Connections.xInstance, cLASS.Type);
                 }
             }
         }
@@ -63,23 +50,23 @@ namespace Import
             switch ((OperationTypes)Enum.Parse(typeof(OperationTypes), _eXCType.Name))
             {
                 case OperationTypes.Stock:
-                    new Stock(_cON).Run();
+                    new Stock().Run();
                     break;
 
                 case OperationTypes.User:
-                    new User(_cON).Run();
+                    new User().Run();
                     break;
 
                 case OperationTypes.Transaction:
-                    new Transaction(_cON).Run();
+                    new Transaction().Run();
                     break;
 
                 case OperationTypes.UserPortfolio:
-                    new UserPortfolio(_cON).Run();
+                    new UserPortfolio().Run();
                     break;
 
                 case OperationTypes.PortfolioValueHistory:
-                    new PortfolioValueHistory(_cON).Run();
+                    new PortfolioValueHistory().Run();
                     break;
             }
         }

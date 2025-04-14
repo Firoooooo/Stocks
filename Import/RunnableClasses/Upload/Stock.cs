@@ -12,21 +12,11 @@ namespace Import.RunnableClasses.Upload
 
 
         /// <summary>
-        /// base call
-        /// </summary>
-        /// <param name="_cON">connection context</param>
-        public Stock(Connections _cON) 
-            : base(_cON)
-        {
-            CON = _cON;
-        }
-
-        /// <summary>
         /// reads files and then transmits the api responses to the database
         /// </summary>
         public override void Run()
         {
-            StockDataService = new StockDataService(CON);
+            StockDataService = new StockDataService();
             CheckForFiles();
         }
 
