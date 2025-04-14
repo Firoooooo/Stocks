@@ -21,7 +21,6 @@ namespace Import
         /// <summary>
         /// constructor that receives the context and creates an instance of the client class to execute the request
         /// </summary>
-        /// <param name="_cON">context class</param>
         public StockDataService()
         {
             HTTPClient = new HttpClient();

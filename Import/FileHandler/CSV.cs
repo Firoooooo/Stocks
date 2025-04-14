@@ -8,7 +8,7 @@ namespace Import.FileHandler
     public class CSV : FileReaderBase
     {
         /// <summary>
-        /// constructor  to receive and process the stream
+        /// constructor to receive and process the stream
         /// </summary>
         /// <param name="_rESXFile">file stream</param>
         public CSV(string _rESXFile)

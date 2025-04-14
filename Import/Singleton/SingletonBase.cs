@@ -20,7 +20,7 @@ namespace Import.Singleton
         /// <summary>
         /// constructor that checks if an instance has been created and throws an exception if so
         /// </summary>
-        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="InvalidOperationException">exc</exception>
         protected SingletonBase()
         {
             if (Instance.IsValueCreated)
