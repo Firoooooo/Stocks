@@ -6,7 +6,6 @@ namespace Import
 {
     public class SQLInitializer
     {
-        public Connections CON { get; set; }
         public MySqlConnection SQLConnection { get; set; }
 
 
@@ -14,10 +13,9 @@ namespace Import
         /// constructor that receives the context and opens the connection
         /// </summary>
         /// <param name="_cON">context class</param>
-        public SQLInitializer(Connections _cON)
+        public SQLInitializer()
         {
-            CON = _cON;
-            SQLConnection = new MySqlConnection(CON.CONNECTIONSTRING);
+            SQLConnection = new MySqlConnection(Connections.xInstance.CONNECTIONSTRING);
             SQLConnection.Open();
         }
 
@@ -27,7 +25,7 @@ namespace Import
         private void CreateDatabase()
         {
             ExecuteQuery($@"
-                CREATE DATABASE IF NOT EXISTS {CON.DATABASENAME};
+                CREATE DATABASE IF NOT EXISTS {Connections.xInstance.DATABASENAME};
                 ", SQLConnection);
         }
 
@@ -39,7 +37,7 @@ namespace Import
             DataTable sQLDataTable;
 
             CreateDatabase();
-            ExecuteQuery($"USE {CON.DATABASENAME};"
+            ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"
                 , SQLConnection);
 
             ExecuteQuery(@"
@@ -149,7 +147,7 @@ namespace Import
         /// <param name="_rESXFile">file name</param>
         public void InsertInUser(string _rESXFile)
         {
-            ExecuteQuery($"USE {CON.DATABASENAME};"
+            ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"
                 , SQLConnection);
 
             string sQLSecure = GetSecureFilePriv(_rESXFile);
@@ -171,7 +169,7 @@ namespace Import
         /// <param name="_rESXFile"></param>
         public void InsertInPortfolioValueHistory(string _rESXFile)
         {
-            ExecuteQuery($"USE {CON.DATABASENAME};"
+            ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"
                 , SQLConnection);
 
             string sQLSecure = GetSecureFilePriv(_rESXFile);
@@ -193,7 +191,7 @@ namespace Import
         /// <param name="_rESXFile"></param>
         public void InsertInTransaction(string _rESXFile)
         {
-            ExecuteQuery($"USE {CON.DATABASENAME};"
+            ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"
                , SQLConnection);
 
             string sQLSecure = GetSecureFilePriv(_rESXFile);
@@ -215,7 +213,7 @@ namespace Import
         /// <param name="_rESXFile"></param>
         public void InsertInUserPortfolio(string _rESXFile)
         {
-            ExecuteQuery($"USE {CON.DATABASENAME};"
+            ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"
                , SQLConnection);
 
             string sQLSecure = GetSecureFilePriv(_rESXFile);

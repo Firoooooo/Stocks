@@ -12,7 +12,6 @@ namespace Import
     /// </summary>
     public class StockDataService
     {
-        private Connections CON { get; set; }
         private JObject TimeSeriesData { get; set; }
         private HttpClient HTTPClient { get; set; }
         public List<StockPrice> StockPrices { get; set; }
@@ -23,9 +22,8 @@ namespace Import
         /// constructor that receives the context and creates an instance of the client class to execute the request
         /// </summary>
         /// <param name="_cON">context class</param>
-        public StockDataService(Connections _cON)
+        public StockDataService()
         {
-            CON = _cON;
             HTTPClient = new HttpClient();
         }
 
@@ -38,7 +36,7 @@ namespace Import
         { 
             try
             {
-                string aPIURL = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={_nASDAQS}&apikey={CON.APIKEY}";
+                string aPIURL = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={_nASDAQS}&apikey={Connections.xInstance.APIKEY}";
                 HttpResponseMessage rESP = HTTPClient.GetAsync(aPIURL).Result;
 
                 if (!rESP.IsSuccessStatusCode)
@@ -85,10 +83,10 @@ namespace Import
         {
             try
             {
-                using (MySqlConnection sQLCon = new MySqlConnection(CON.CONNECTIONSTRING))
+                using (MySqlConnection sQLCon = new MySqlConnection(Connections.xInstance.CONNECTIONSTRING))
                 {
                     sQLCon.Open();
-                    SQLInitializer.ExecuteQuery($"USE {CON.DATABASENAME};", sQLCon);
+                    SQLInitializer.ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};", sQLCon);
 
                     string sQLQuery = @"INSERT INTO Stock (SYMBOL, DATE, OPEN, HIGH, LOW, CLOSE, VOLUME) VALUES (@SYMBOL, @DATE, @OPEN, @HIGH, @LOW, @CLOSE, @VOLUME) ON DUPLICATE KEY UPDATE OPEN = @OPEN, HIGH = @HIGH, LOW = @LOW, CLOSE = @CLOSE, VOLUME = @VOLUME, LASTUPDATED = CURRENT_TIMESTAMP;";
 

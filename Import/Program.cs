@@ -18,7 +18,7 @@ namespace Import
         /// <param name="_aRGS">args</param>
         public static void Main(string[] _aRGS)
         {
-            Connections cON = Connections.GetInstance();
+            Connections cON = Connections.xInstance;
 
             using (Stream rESXFile = Assembly.GetExecutingAssembly().GetManifestResourceStream("Import.Configs.Config.json"))
             {
@@ -26,7 +26,7 @@ namespace Import
                 {
                     string rESXContent = rESXReader.ReadToEnd();
 
-                    cON = JsonConvert.DeserializeObject<Connections>(rESXContent);
+                    JsonConvert.PopulateObject(rESXContent, cON);
                 }
             }
 
@@ -52,7 +52,7 @@ namespace Import
                         break;
 
                     var cLASS = rUNNABClasses.FirstOrDefault(X => X.Attribute.TransactionNumber == eXCNumber);
-                    ExecuteOperation(cON, cLASS.Type);
+                    ExecuteOperation(cLASS.Type);
                 }
             }
         }
@@ -62,16 +62,16 @@ namespace Import
         /// </summary>
         /// <param name="_cON">context class which includes the informations needed during the operation</param>
         /// <param name="_eXCType">attribute of the class</param>
-        private static void ExecuteOperation(Connections _cON, Type _eXCType)
+        private static void ExecuteOperation(Type _eXCType)
         {
             switch ((OperationTypes)Enum.Parse(typeof(OperationTypes), _eXCType.Name))
             {
                 case OperationTypes.SchemaBuilder:
-                    new SchemaBuilder(_cON).Run();
+                    new SchemaBuilder().Run();
                     break;
 
                 case OperationTypes.UploadHandler:
-                    new UploadHandler(_cON).Run();
+                    new UploadHandler().Run();
                     break;
             }
         }
