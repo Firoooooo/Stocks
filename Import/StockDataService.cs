@@ -1,5 +1,5 @@
-﻿using Import.Context;
-using Import.Resources;
+﻿using Import.Resources;
+using Import.Singleton;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json.Linq;
 using System.Data;

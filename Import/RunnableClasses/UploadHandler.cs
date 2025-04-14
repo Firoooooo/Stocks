@@ -1,6 +1,6 @@
-﻿using Import.Context;
-using Import.Resources;
+﻿using Import.Resources;
 using Import.RunnableClasses.Upload;
+using Import.Singleton;
 using System.Reflection;
 
 namespace Import

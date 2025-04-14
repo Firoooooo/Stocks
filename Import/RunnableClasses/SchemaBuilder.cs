@@ -1,4 +1,4 @@
-﻿using Import.Context;
+﻿using Import.Singleton;
 
 namespace Import.RunnableClasses
 {

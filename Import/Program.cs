@@ -1,6 +1,6 @@
-﻿using Import.Context;
-using Import.Resources;
+﻿using Import.Resources;
 using Import.RunnableClasses;
+using Import.Singleton;
 using Newtonsoft.Json;
 using System.Data;
 using System.Reflection;
@@ -16,9 +16,9 @@ namespace Import
         /// main mehtode that executes the api call, prepares the data and writes it to the database
         /// </summary>
         /// <param name="_aRGS">args</param>
-        static void Main(string[] _aRGS)
+        public static void Main(string[] _aRGS)
         {
-            Connections cON = null;
+            Connections cON = Connections.GetInstance();
 
             using (Stream rESXFile = Assembly.GetExecutingAssembly().GetManifestResourceStream("Import.Configs.Config.json"))
             {
