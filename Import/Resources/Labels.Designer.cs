@@ -178,15 +178,6 @@ namespace Import.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Erfolgreich abgeschlossen.
-        /// </summary>
-        public static string QueryOK {
-            get {
-                return ResourceManager.GetString("QueryOK", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 2. Symbol.
         /// </summary>
         public static string Symbol {
