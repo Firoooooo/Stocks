@@ -170,7 +170,6 @@ namespace Import
                         sQLCommand.ExecuteNonQuery();
                     });
 
-                    Console.WriteLine($"{Labels.QueryOK}");
                     sQLTransaction.Commit();
                 }
                 catch (Exception EX)
@@ -223,7 +222,6 @@ namespace Import
                     });
 
                     sQLTransaction.Commit();
-                    Console.WriteLine($"{Labels.QueryOK}");
                 }
                 catch (Exception EX)
                 {
@@ -261,7 +259,6 @@ namespace Import
                     });
 
                     sQLTransaction.Commit();
-                    Console.WriteLine($"{Labels.QueryOK}");
                 }
                 catch (Exception EX)
                 {

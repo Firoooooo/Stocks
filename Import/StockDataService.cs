@@ -126,8 +126,8 @@ namespace Import
 
                         sQLCom.ExecuteNonQuery();
                     });
+
                     sQLTransaction.Commit();
-                    Console.WriteLine($"{Labels.QueryOK}");
                 }
                 catch (Exception EX)
                 {
