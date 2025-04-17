@@ -49,6 +49,10 @@ namespace Import
         {
             switch ((OperationTypes)Enum.Parse(typeof(OperationTypes), _eXCType.Name))
             {
+                case OperationTypes.StockAPI:
+                    new StockAPI().Run();
+                    break;
+
                 case OperationTypes.Stock:
                     new Stock().Run();
                     break;

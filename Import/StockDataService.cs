@@ -1,7 +1,9 @@
-﻿using Import.Resources;
+﻿using Import.Model;
+using Import.Resources;
 using Import.Singleton;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json.Linq;
+using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace Import
@@ -13,8 +15,8 @@ namespace Import
     {
         private JObject TimeSeriesData { get; set; }
         private HttpClient HTTPClient { get; set; }
-        public List<StockPrice> StockPrices { get; set; }
-            = new List<StockPrice>();
+        public Dictionary<int, DTOStockPrice> StockPrices { get; set; }
+            = new Dictionary<int, DTOStockPrice>();
 
 
         /// <summary>
@@ -30,7 +32,7 @@ namespace Import
         /// </summary>
         /// <param name="_nASDAQS">the NASDAQ symbol of the stock for which data should be retrieved</param>
         /// <returns>Task</returns>
-        public async Task FetchAndStoreStockData(string _nASDAQS)
+        public async Task FetchAndStoreStockData(string _nASDAQS, int _sTOCKCounter)
         { 
             try
             {
@@ -42,7 +44,7 @@ namespace Import
 
                 string jSON = await rESP.Content.ReadAsStringAsync();
 
-                ParseStockData(jSON);
+                ParseStockData(jSON, _sTOCKCounter);
             }
             catch (Exception EX)
             {
@@ -54,14 +56,14 @@ namespace Import
         /// parses the JSON response from the alpha vantage API and extracts stock price data
         /// </summary>
         /// <param name="_jSON">the JSON response string containing stock market data</param>
-        private void ParseStockData(string _jSON)
+        private void ParseStockData(string _jSON, int _sTOCKCounter)
         {
             JObject jSONParsed = JObject.Parse(_jSON);
             TimeSeriesData = jSONParsed[Resources.Labels.TimeSeriesData] as JObject;
 
             if (TimeSeriesData != null && TimeSeriesData.Properties().Any())
             {
-                StockPrices.Add(new StockPrice
+                StockPrices.Add(_sTOCKCounter, new DTOStockPrice
                 {
                     Symbol = jSONParsed[Resources.Labels.MetaData][Resources.Labels.Symbol].ToString(),
                     Date = DateTime.Parse(TimeSeriesData.Properties().First().Name),
@@ -84,38 +86,10 @@ namespace Import
                 using (MySqlConnection sQLCon = new MySqlConnection(Connections.xInstance.CONNECTIONSTRING))
                 {
                     sQLCon.Open();
-                    SQLInitializer.ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};", sQLCon);
+                    SQLInitializer.ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"
+                        , sQLCon);
 
-                    string sQLQuery = @"INSERT INTO Stock (SYMBOL, DATE, OPEN, HIGH, LOW, CLOSE, VOLUME) VALUES (@SYMBOL, @DATE, @OPEN, @HIGH, @LOW, @CLOSE, @VOLUME) ON DUPLICATE KEY UPDATE OPEN = @OPEN, HIGH = @HIGH, LOW = @LOW, CLOSE = @CLOSE, VOLUME = @VOLUME, LASTUPDATED = CURRENT_TIMESTAMP;";
-
-                    using (MySqlTransaction sQLTransaction = sQLCon.BeginTransaction())
-                    using (MySqlCommand sQLCom = new MySqlCommand(sQLQuery, sQLCon, sQLTransaction))
-                    {
-                        try
-                        {
-                            StockPrices.ForEach(P =>
-                            {
-                                sQLCom.Parameters.Clear();
-
-                                sQLCom.Parameters.AddWithValue("@SYMBOL", P.Symbol);
-                                sQLCom.Parameters.AddWithValue("@DATE", P.Date);
-                                sQLCom.Parameters.AddWithValue("@OPEN", P.Open);
-                                sQLCom.Parameters.AddWithValue("@HIGH", P.High);
-                                sQLCom.Parameters.AddWithValue("@LOW", P.Low);
-                                sQLCom.Parameters.AddWithValue("@CLOSE", P.Close);
-                                sQLCom.Parameters.AddWithValue("@VOLUME", P.Volume);
-
-                                sQLCom.ExecuteNonQuery();
-                            });
-
-                            sQLTransaction.Commit();
-                        }
-                        catch (Exception EX)
-                        {
-                            sQLTransaction.Rollback();
-                            Console.WriteLine($"{Import.Resources.Labels.DataImportFailed} {EX.Message}");
-                        }
-                    }
+                    StockDataService.ImportIntoStock(sQLCon, StockPrices);
                 }
             }
             catch (Exception EX)
@@ -124,5 +98,43 @@ namespace Import
             }
         }
 
+        /// <summary>
+        /// inserts the stock data into the database
+        /// </summary>
+        /// <param name="_sQLConnection">sql connection</param>
+        /// <param name="_rESXValues">res</param>
+        public static void ImportIntoStock(MySqlConnection _sQLConnection, Dictionary<int, DTOStockPrice> _rESXValues)
+        {
+            string sQLQuery = @"INSERT INTO Stock (SYMBOL, DATE, OPEN, HIGH, LOW, CLOSE, VOLUME) VALUES (@SYMBOL, @DATE, @OPEN, @HIGH, @LOW, @CLOSE, @VOLUME) ON DUPLICATE KEY UPDATE OPEN = @OPEN, HIGH = @HIGH, LOW = @LOW, CLOSE = @CLOSE, VOLUME = @VOLUME, LASTUPDATED = CURRENT_TIMESTAMP;";
+
+            using (MySqlTransaction sQLTransaction = _sQLConnection.BeginTransaction())
+            using (MySqlCommand sQLCom = new MySqlCommand(sQLQuery, _sQLConnection, sQLTransaction))
+            {
+                try
+                {
+                    _rESXValues.ToList().ForEach(S =>
+                    {
+                        sQLCom.Parameters.Clear();
+
+                        sQLCom.Parameters.AddWithValue("@SYMBOL", S.Value.Symbol);
+                        sQLCom.Parameters.AddWithValue("@DATE", S.Value.Date);
+                        sQLCom.Parameters.AddWithValue("@OPEN", S.Value.Open);
+                        sQLCom.Parameters.AddWithValue("@HIGH", S.Value.High);
+                        sQLCom.Parameters.AddWithValue("@LOW", S.Value.Low);
+                        sQLCom.Parameters.AddWithValue("@CLOSE", S.Value.Close);
+                        sQLCom.Parameters.AddWithValue("@VOLUME", S.Value.Volume);
+
+                        sQLCom.ExecuteNonQuery();
+                    });
+                    sQLTransaction.Commit();
+                    Console.WriteLine($"{Labels.QueryOK}");
+                }
+                catch (Exception EX)
+                {
+                    sQLTransaction.Rollback();
+                    Console.WriteLine($"{Import.Resources.Labels.DataImportFailed} {EX.Message}");
+                }
+            }
+        }
     }
 }

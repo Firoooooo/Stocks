@@ -49,7 +49,7 @@ namespace Import.ImportHandler
         private void ParseAndAddStocks(StreamReader _rESXStreamReader)
         {
             string[] rESXSplitted = _rESXStreamReader.ReadToEnd()
-                                        .Split(new[] { '\r', '\n' },
+                                        .Split("\r\n",
                                                StringSplitOptions.RemoveEmptyEntries);
             rESXSplitted.ToList().ForEach(E => Stocks.Add(E));
         }

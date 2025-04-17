@@ -26,7 +26,12 @@
         UploadHandler,
 
         /// <summary>
-        /// import the transactions to the database
+        /// import the stocks to the database via api
+        /// </summary>
+        StockAPI,
+
+        /// <summary>
+        /// import the stocks to the database
         /// </summary>
         Stock,
 

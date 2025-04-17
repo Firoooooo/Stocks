@@ -133,19 +133,16 @@
     <value>Programm beenden</value>
   </data>
   <data name="EnterFile" xml:space="preserve">
-    <value>Geben Sie den Pfad zur Datei an, die ausgelesen werden soll. Die enthaltenen Daten werden anschließend zusammen mit den API Daten in die Datenbank geschrieben</value>
+    <value>Geben Sie den Pfad zur Datei an, die ausgelesen werden soll</value>
   </data>
   <data name="FileDoesntExists" xml:space="preserve">
-    <value>The file at the specified path does not seem to exist. Please enter a valid path.</value>
+    <value>Die Datei konnte unter dem angegebenen Pfad nicht gefunden werden. Bitte überprüfen Sie den Pfad</value>
   </data>
   <data name="FileDontExists" xml:space="preserve">
     <value>Die Datei im angegebenen Pfad scheint nicht zu existieren. Bitte geben Sie einen gültigen Pfad ein</value>
   </data>
   <data name="FileHandlingException" xml:space="preserve">
     <value>Entsprechendes File Handling ist nicht Implementiert</value>
-  </data>
-  <data name="GiveFileInput" xml:space="preserve">
-    <value>Enter the path to the Excel file to be read. The data it contains will then be written to the database along with the API data.</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>2. high</value>
@@ -158,6 +155,9 @@
   </data>
   <data name="Open" xml:space="preserve">
     <value>1. open</value>
+  </data>
+  <data name="QueryOK" xml:space="preserve">
+    <value>Erfolgreich abgeschlossen</value>
   </data>
   <data name="Symbol" xml:space="preserve">
     <value>2. Symbol</value>
