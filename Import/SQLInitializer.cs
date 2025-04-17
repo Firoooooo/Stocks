@@ -99,6 +99,7 @@ namespace Import
         /// executes the query
         /// </summary>
         /// <param name="_sQLQuery">query to execute</param>
+        /// <param name="_sQLCon">connection string</param>
         public static void ExecuteQuery(string _sQLQuery, MySqlConnection _sQLCon)
         {
             try

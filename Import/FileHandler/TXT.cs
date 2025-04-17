@@ -45,10 +45,10 @@ namespace Import.ImportHandler
         /// <summary>
         /// parses the txt file and adds the stocks to the list
         /// </summary>
-        /// <param name="rESXStreamReader">ressource stream</param>
-        private void ParseAndAddStocks(StreamReader rESXStreamReader)
+        /// <param name="_rESXStreamReader">ressource stream</param>
+        private void ParseAndAddStocks(StreamReader _rESXStreamReader)
         {
-            string[] rESXSplitted = rESXStreamReader.ReadToEnd()
+            string[] rESXSplitted = _rESXStreamReader.ReadToEnd()
                                         .Split(new[] { '\r', '\n' },
                                                StringSplitOptions.RemoveEmptyEntries);
             rESXSplitted.ToList().ForEach(E => Stocks.Add(E));
