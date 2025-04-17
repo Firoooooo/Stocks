@@ -1,6 +1,4 @@
-﻿using Import.Singleton;
-
-namespace Import.RunnableClasses
+﻿namespace Import.RunnableClasses
 {
     [RunnableClassAttribute(1, "Initialisierung der Datenbankstruktur einschließlich der Tabellen und Referenzen")]
     public class SchemaBuilder : RunnableClassBase

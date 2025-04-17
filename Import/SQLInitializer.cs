@@ -1,8 +1,6 @@
-﻿using Import.Resources;
-using Import.RunnableClasses.Upload;
+﻿using Import.RunnableClasses.Upload;
 using Import.Singleton;
 using MySql.Data.MySqlClient;
-using System.Globalization;
 
 namespace Import
 {

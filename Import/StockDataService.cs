@@ -3,7 +3,6 @@ using Import.Resources;
 using Import.Singleton;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json.Linq;
-using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace Import
@@ -31,6 +30,7 @@ namespace Import
         /// fetches stock data from the Alpha Vantage API and processes it
         /// </summary>
         /// <param name="_nASDAQS">the NASDAQ symbol of the stock for which data should be retrieved</param>
+        /// <param name="_sTOCKCounter">stock counter for the dictionary</param>
         /// <returns>Task</returns>
         public async Task FetchAndStoreStockData(string _nASDAQS, int _sTOCKCounter)
         { 
@@ -56,6 +56,7 @@ namespace Import
         /// parses the JSON response from the alpha vantage API and extracts stock price data
         /// </summary>
         /// <param name="_jSON">the JSON response string containing stock market data</param>
+        /// <param name="_sTOCKCounter">stock counter for the dictionary</param>
         private void ParseStockData(string _jSON, int _sTOCKCounter)
         {
             JObject jSONParsed = JObject.Parse(_jSON);

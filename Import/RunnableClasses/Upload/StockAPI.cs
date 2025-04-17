@@ -1,6 +1,4 @@
-﻿using System.Data.SqlClient;
-
-namespace Import.RunnableClasses.Upload
+﻿namespace Import.RunnableClasses.Upload
 {
     /// <summary>
     /// Liest Bezeichnungen aus einer Datei, ruft die zugehörigen Daten über eine API ab und speichert sie in einer Datenbank
