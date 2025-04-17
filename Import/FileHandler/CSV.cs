@@ -47,11 +47,11 @@ namespace Import.FileHandler
         /// <summary>
         /// parses the csv file and adds the stocks to the list
         /// </summary>
-        /// <param name="rESXContent"></param>
-        private void ParseAndAddStocks(string rESXContent)
+        /// <param name="_rESXContent"></param>
+        private void ParseAndAddStocks(string _rESXContent)
         {
-            rESXContent = rESXContent.Replace("\"", "").Replace("\"\"", "");
-            string[] rESXSplitted = rESXContent.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            _rESXContent = _rESXContent.Replace("\"", "").Replace("\"\"", "");
+            string[] rESXSplitted = _rESXContent.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
             rESXSplitted
                 .Where(V => !String.IsNullOrWhiteSpace(V))
                 .Select(V => V.Replace(",", ""))
