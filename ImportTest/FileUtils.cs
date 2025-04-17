@@ -1,7 +1,6 @@
 ﻿using Import;
 using Import.Factories;
 using Import.Singleton;
-using Microsoft.Testing.Platform.Extensions.Messages;
 using Newtonsoft.Json;
 using System.Reflection;
 
@@ -41,13 +40,13 @@ namespace ImportTest
         /// test method to check whether the config is given
         /// </summary>
         [TestMethod]
-        public void CheckWhetherTheConfigIsValid()
+        public void CheckIfConfigIsValid()
         {
             Connections cON = Connections.xInstance;
 
-            using (Stream rESXFile = Assembly.Load("Import").GetManifestResourceStream("Import.Configs.Config.json"))
+            using (Stream rESXBase = Assembly.Load("Import").GetManifestResourceStream("Import.Configs.Config.json"))
             {
-                using (StreamReader rESXStreamReader = new StreamReader(rESXFile))
+                using (StreamReader rESXStreamReader = new StreamReader(rESXBase))
                 {
                     string rESXCOntent = rESXStreamReader.ReadToEnd();
 
