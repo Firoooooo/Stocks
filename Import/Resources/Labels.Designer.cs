@@ -106,7 +106,7 @@ namespace Import.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Geben Sie den Pfad zur Datei an, die ausgelesen werden soll. Die enthaltenen Daten werden anschließend zusammen mit den API Daten in die Datenbank geschrieben.
+        ///   Looks up a localized string similar to Geben Sie den Pfad zur Datei an, die ausgelesen werden soll.
         /// </summary>
         public static string EnterFile {
             get {
@@ -115,7 +115,7 @@ namespace Import.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The file at the specified path does not seem to exist. Please enter a valid path..
+        ///   Looks up a localized string similar to Die Datei konnte unter dem angegebenen Pfad nicht gefunden werden. Bitte überprüfen Sie den Pfad.
         /// </summary>
         public static string FileDoesntExists {
             get {
@@ -138,15 +138,6 @@ namespace Import.Resources {
         public static string FileHandlingException {
             get {
                 return ResourceManager.GetString("FileHandlingException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter the path to the Excel file to be read. The data it contains will then be written to the database along with the API data..
-        /// </summary>
-        public static string GiveFileInput {
-            get {
-                return ResourceManager.GetString("GiveFileInput", resourceCulture);
             }
         }
         
@@ -183,6 +174,15 @@ namespace Import.Resources {
         public static string Open {
             get {
                 return ResourceManager.GetString("Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erfolgreich abgeschlossen.
+        /// </summary>
+        public static string QueryOK {
+            get {
+                return ResourceManager.GetString("QueryOK", resourceCulture);
             }
         }
         

@@ -1,5 +1,8 @@
-﻿using Import.Singleton;
+﻿using Import.Resources;
+using Import.RunnableClasses.Upload;
+using Import.Singleton;
 using MySql.Data.MySqlClient;
+using System.Globalization;
 
 namespace Import
 {
@@ -148,17 +151,34 @@ namespace Import
             ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"
                 , SQLConnection);
 
-            string sQLSecure = GetSecureFilePriv(_rESXFile);
-            string sQLDestination = Path.Combine(sQLSecure, Path.GetFileName(_rESXFile));
-            File.Copy(_rESXFile, sQLDestination, true);
-            _rESXFile = sQLDestination;
+            string sQLQuery = @"INSERT INTO User (USERNAME, EMAIL, PASSWORDHASH, BALANCE) VALUES (@USERNAME, @EMAIL, @PASSWORDHASH, @BALANCE) ON DUPLICATE KEY UPDATE USERNAME = @USERNAME, EMAIL = @EMAIL, PASSWORDHASH = @PASSWORDHASH, BALANCE = @BALANCE;";
 
-            if (Path.GetExtension(_rESXFile).ToUpper() == ".CSV")
-                ExecuteQuery($"LOAD DATA INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE User FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (USERNAME, EMAIL, PASSWORDHASH, BALANCE);", SQLConnection);
-            if (Path.GetExtension(_rESXFile).ToUpper() == ".TXT")
-                ExecuteQuery($"LOAD DATA INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE User FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\r\n' (USERNAME, EMAIL, PASSWORDHASH, BALANCE);", SQLConnection);
+            using (MySqlTransaction sQLTransaction = SQLConnection.BeginTransaction())
+            using (MySqlCommand sQLCommand = new MySqlCommand(sQLQuery, SQLConnection, sQLTransaction))
+            {
+                try
+                {
+                    User.UserMap.ToList().ForEach(U =>
+                    {
+                        sQLCommand.Parameters.Clear();
 
-            File.Delete(_rESXFile);
+                        sQLCommand.Parameters.AddWithValue("@USERNAME", U.Value.Username);
+                        sQLCommand.Parameters.AddWithValue("@EMAIL", U.Value.EMail);
+                        sQLCommand.Parameters.AddWithValue("@PASSWORDHASH", U.Value.PasswordHash);
+                        sQLCommand.Parameters.AddWithValue("@BALANCE", U.Value.Balance);
+
+                        sQLCommand.ExecuteNonQuery();
+                    });
+
+                    Console.WriteLine($"{Labels.QueryOK}");
+                    sQLTransaction.Commit();
+                }
+                catch (Exception EX)
+                {
+                    sQLTransaction.Rollback();
+                    Console.WriteLine($"{Import.Resources.Labels.DataImportFailed} {EX.Message}");
+                }
+            }
         }
 
         /// <summary>
@@ -170,17 +190,7 @@ namespace Import
             ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"
                 , SQLConnection);
 
-            string sQLSecure = GetSecureFilePriv(_rESXFile);
-            string sQLDestination = Path.Combine(sQLSecure, Path.GetFileName(_rESXFile));
-            File.Copy(_rESXFile, sQLDestination, true);
-            _rESXFile = sQLDestination;
-
-            if (Path.GetExtension(_rESXFile).ToUpper() == ".CSV")
-                ExecuteQuery($"LOAD DATA INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE PortfolioValueHistory FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (USERID, TOTALVALUE);", SQLConnection);
-            if (Path.GetExtension(_rESXFile).ToUpper() == ".TXT")
-                ExecuteQuery($"LOAD DATA INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE PortfolioValueHistory FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\r\n' (USERID, TOTALVALUE);", SQLConnection);
-
-            File.Delete(_rESXFile);
+            
         }
 
         /// <summary>
@@ -192,17 +202,35 @@ namespace Import
             ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"
                , SQLConnection);
 
-            string sQLSecure = GetSecureFilePriv(_rESXFile);
-            string sQLDestination = Path.Combine(sQLSecure, Path.GetFileName(_rESXFile));
-            File.Copy(_rESXFile, sQLDestination, true);
-            _rESXFile = sQLDestination;
+            string sQLQuery = @"INSERT INTO Transaction (USERID, STOCKID, TRANSACTIONTYPE, QUANTITY, PRICE) VALUES (@USERID, @STOCKID, @TRANSACTIONTYPE, @QUANTITY, @PRICE) ON DUPLICATE KEY UPDATE USERID = @USERID, STOCKID = @STOCKID, TRANSACTIONTYPE = @TRANSACTIONTYPE, QUANTITY = @QUANTITY, PRICE = @PRICE;";
 
-            if (Path.GetExtension(_rESXFile).ToUpper() == ".CSV")
-                ExecuteQuery($"LOAD DATA INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE Transaction FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (USERID, STOCKID, TRANSACTIONTYPE, QUANTITY, PRICE);", SQLConnection);
-            if (Path.GetExtension(_rESXFile).ToUpper() == ".TXT")
-                ExecuteQuery($"LOAD DATA INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE Transaction FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\r\n' (USERID, STOCKID, TRANSACTIONTYPE, QUANTITY, PRICE);", SQLConnection);
+            using (MySqlTransaction sQLTransaction = SQLConnection.BeginTransaction())
+            using (MySqlCommand sQLCommand = new MySqlCommand(sQLQuery, SQLConnection, sQLTransaction))
+            {
+                try
+                {
+                    Transaction.TransactionMap.ToList().ForEach(U =>
+                    {
+                        sQLCommand.Parameters.Clear();
 
-            File.Delete(_rESXFile);
+                        sQLCommand.Parameters.AddWithValue("@USERID", U.Value.UserID);
+                        sQLCommand.Parameters.AddWithValue("@STOCKID", U.Value.StockID);
+                        sQLCommand.Parameters.AddWithValue("@TRANSACTIONTYPE", U.Value.TransactionType);
+                        sQLCommand.Parameters.AddWithValue("@QUANTITY", U.Value.Quantity);
+                        sQLCommand.Parameters.AddWithValue("@PRICE", U.Value.Price);
+
+                        sQLCommand.ExecuteNonQuery();
+                    });
+
+                    sQLTransaction.Commit();
+                    Console.WriteLine($"{Labels.QueryOK}");
+                }
+                catch (Exception EX)
+                {
+                    sQLTransaction.Rollback();
+                    Console.WriteLine($"{Import.Resources.Labels.DataImportFailed} {EX.Message}");
+                }
+            }
         }
 
         /// <summary>
@@ -214,17 +242,46 @@ namespace Import
             ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"
                , SQLConnection);
 
-            string sQLSecure = GetSecureFilePriv(_rESXFile);
-            string sQLDestination = Path.Combine(sQLSecure, Path.GetFileName(_rESXFile));
-            File.Copy(_rESXFile, sQLDestination, true);
-            _rESXFile = sQLDestination;
+            string sQLQuery = @"INSERT INTO UserPortfolio (USERID, STOCKID, QUANTITY) VALUES (@USERID, @STOCKID, @QUANTITY) ON DUPLICATE KEY UPDATE USERID = @USERID, STOCKID = @STOCKID, QUANTITY = @QUANTITY;";
 
-            if (Path.GetExtension(_rESXFile).ToUpper() == ".CSV")
-                ExecuteQuery($"LOAD DATA INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE UserPortfolio FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (USERID, STOCKID, QUANTITY);", SQLConnection);
-            if (Path.GetExtension(_rESXFile).ToUpper() == ".TXT")
-                ExecuteQuery($"LOAD DATA INFILE '{_rESXFile.Replace("\\", "/")}' INTO TABLE UserPortfolio FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\r\n' (USERID, STOCKID, QUANTITY);", SQLConnection);
+            using (MySqlTransaction sQLTransaction = SQLConnection.BeginTransaction())
+            using (MySqlCommand sQLCommand = new MySqlCommand(sQLQuery, SQLConnection, sQLTransaction))
+            {
+                try
+                {
+                    UserPortfolio.UserPortfolioMap.ToList().ForEach(U =>
+                    {
+                        sQLCommand.Parameters.Clear();
 
-            File.Delete(_rESXFile);
+                        sQLCommand.Parameters.AddWithValue("@USERID", U.Value.UserID);
+                        sQLCommand.Parameters.AddWithValue("@STOCKID", U.Value.StockID);
+                        sQLCommand.Parameters.AddWithValue("@QUANTITY", U.Value.Quantity);
+
+                        sQLCommand.ExecuteNonQuery();
+                    });
+
+                    sQLTransaction.Commit();
+                    Console.WriteLine($"{Labels.QueryOK}");
+                }
+                catch (Exception EX)
+                {
+                    sQLTransaction.Rollback();
+                    Console.WriteLine($"{Import.Resources.Labels.DataImportFailed} {EX.Message}");
+                }
+            }
         }
+
+        /// <summary>
+        /// inserts the data into the user stpck table
+        /// </summary>
+        /// <param name="_rESXFile">file path</param>
+        public void InsertInStock(string _rESXPath, List<string> _rESXFiles)
+        {
+            SQLInitializer.ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"
+                , SQLConnection);
+
+            StockDataService.ImportIntoStock(SQLConnection, Stock.StockPriceMap);
+        }
+
     }
 }

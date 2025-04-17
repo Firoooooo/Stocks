@@ -54,17 +54,10 @@ namespace Import.FileHandler
             string[] rESXSplitted = _rESXContent.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
             rESXSplitted
                 .Where(V => !String.IsNullOrWhiteSpace(V))
-                .Select(V => V.Replace(",", ""))
+                .Select(V => V.Replace(",", " "))
                 .ToList()
                 .ForEach(V => Stocks.Add(V));
         }
 
-        /// <summary>
-        /// reads the files and then transmits it to the database
-        /// </summary>
-        public void ReadRESXFiles()
-        {
-
-        }
     }
 }
