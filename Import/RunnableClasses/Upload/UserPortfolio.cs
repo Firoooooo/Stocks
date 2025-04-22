@@ -7,7 +7,7 @@ namespace Import.RunnableClasses.Upload
     [Upload(4, "Importiert Portfolio Daten und speichert sie in der User Portfolio Tabelle")]
     public class UserPortfolio : RunnableClassBase
     {
-        public static Dictionary<int, DTOPortfolio> UserPortfolioMap { get; set; }
+        public static Dictionary<int, DTOUserPortfolio> UserPortfolioMap { get; set; }
 
         /// <summary>
         /// run method of the runnable classes
@@ -26,13 +26,13 @@ namespace Import.RunnableClasses.Upload
         /// <param name="_rESX">resx file</param>
         public void CreateUserPortfolioMap(List<string> _rESX)
         {
-            UserPortfolioMap = new Dictionary<int, DTOPortfolio>();
+            UserPortfolioMap = new Dictionary<int, DTOUserPortfolio>();
             int rESXC = 1;
 
             _rESX.ForEach(S =>
             {
                 string[] rESXCSplit = S.Split(new[] { ' ', '\t', ','});
-                UserPortfolioMap.Add(rESXC, new DTOPortfolio
+                UserPortfolioMap.Add(rESXC, new DTOUserPortfolio
                 {
                     UserID = int.Parse(rESXCSplit[0]), StockID = int.Parse(rESXCSplit[1]), Quantity = int.Parse(rESXCSplit[2])
                 });
