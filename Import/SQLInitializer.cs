@@ -42,7 +42,8 @@ namespace Import
                 CREATE TABLE IF NOT EXISTS USER (
                     USERID INT AUTO_INCREMENT PRIMARY KEY,           
                     USERNAME VARCHAR(255) NOT NULL,                  
-                    EMAIL VARCHAR(255) NOT NULL,                    
+                    EMAIL VARCHAR(255) NOT NULL,  
+                    PASSWORD VARCHAR(255) NOT NULL, 
                     PASSWORDHASH VARCHAR(255) NOT NULL,             
                     BALANCE DECIMAL(15, 2) DEFAULT 0.00              
                 );", SQLConnection);
@@ -187,7 +188,31 @@ namespace Import
             ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"
                 , SQLConnection);
 
-            
+            string sQLQuery = @"INSERT INTO PortfolioValueHistory (USERID, TOTALVALUE) VALUES (@USERID, @TOTALVALUE) ON DUPLICATE KEY UPDATE USERID = @USERID, TOTALVALUE = @TOTALVALUE;";
+
+            using (MySqlTransaction sQLTransaction = SQLConnection.BeginTransaction())
+            using (MySqlCommand sQLCommand = new MySqlCommand(sQLQuery, SQLConnection, sQLTransaction))
+            {
+                try
+                {
+                    PortfolioValueHistory.PortfolioValueHistoryMap.ToList().ForEach(U =>
+                    {
+                        sQLCommand.Parameters.Clear();
+
+                        sQLCommand.Parameters.AddWithValue("@USERID", U.Value.UserID);
+                        sQLCommand.Parameters.AddWithValue("@TOTALVALUE", U.Value.TotalValue);
+
+                        sQLCommand.ExecuteNonQuery();
+                    });
+
+                    sQLTransaction.Commit();
+                }
+                catch (Exception EX)
+                {
+                    sQLTransaction.Rollback();
+                    Console.WriteLine($"{Import.Resources.Labels.DataImportFailed} {EX.Message}");
+                }
+            }
         }
 
         /// <summary>
