@@ -96,3 +96,12 @@ main {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+.main-layout {
+    background-color: #dfdfdf;
+    min-height: 100vh;
+}
+
+.content {
+    padding: 20px;
+}
