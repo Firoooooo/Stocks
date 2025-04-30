@@ -150,7 +150,7 @@ namespace Import
             ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"
                 , SQLConnection);
 
-            string sQLQuery = @"INSERT INTO User (USERNAME, EMAIL, PASSWORDHASH, BALANCE) VALUES (@USERNAME, @EMAIL, @PASSWORDHASH, @BALANCE) ON DUPLICATE KEY UPDATE USERNAME = @USERNAME, EMAIL = @EMAIL, PASSWORDHASH = @PASSWORDHASH, BALANCE = @BALANCE;";
+            string sQLQuery = @"INSERT INTO User (USERNAME, EMAIL, PASSWORD, PASSWORDHASH, BALANCE) VALUES (@USERNAME, @EMAIL, @PASSWORD, @PASSWORDHASH, @BALANCE) ON DUPLICATE KEY UPDATE USERNAME = @USERNAME, EMAIL = @EMAIL, PASSWORD = @PASSWORD, PASSWORDHASH = @PASSWORDHASH, BALANCE = @BALANCE;";
 
             using (MySqlTransaction sQLTransaction = SQLConnection.BeginTransaction())
             using (MySqlCommand sQLCommand = new MySqlCommand(sQLQuery, SQLConnection, sQLTransaction))
@@ -163,6 +163,7 @@ namespace Import
 
                         sQLCommand.Parameters.AddWithValue("@USERNAME", U.Value.Username);
                         sQLCommand.Parameters.AddWithValue("@EMAIL", U.Value.EMail);
+                        sQLCommand.Parameters.AddWithValue("@PASSWORD", U.Value.Passowrd);
                         sQLCommand.Parameters.AddWithValue("@PASSWORDHASH", U.Value.PasswordHash);
                         sQLCommand.Parameters.AddWithValue("@BALANCE", U.Value.Balance);
 

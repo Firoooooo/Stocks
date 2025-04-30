@@ -33,7 +33,7 @@ namespace Import.RunnableClasses.Upload
                 string[] rESXCSplit = S.Split(new[] { ' ', '\t' });
                 UserMap.Add(rESXC, new DTOUser
                 {
-                    Username = rESXCSplit[0].ToString(), EMail = rESXCSplit[1].ToString(), PasswordHash = rESXCSplit[2].ToString(), Balance = decimal.Parse(rESXCSplit[3], CultureInfo.InvariantCulture)
+                    Username = rESXCSplit[0].ToString(), EMail = rESXCSplit[1].ToString(), Passowrd = rESXCSplit[2].ToString(), PasswordHash = rESXCSplit[3].ToString(), Balance = decimal.Parse(rESXCSplit[4], CultureInfo.InvariantCulture)
                 });
                 rESXC++;});
         }
