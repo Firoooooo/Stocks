@@ -147,6 +147,12 @@
   <data name="High" xml:space="preserve">
     <value>2. high</value>
   </data>
+  <data name="LoginFailed" xml:space="preserve">
+    <value>LOGIN IST FEHLGESCHLAGEN</value>
+  </data>
+  <data name="LoginSuccessful" xml:space="preserve">
+    <value>LOGIN WAR ERFOLGREICH</value>
+  </data>
   <data name="Low" xml:space="preserve">
     <value>3. low</value>
   </data>

@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportTest", "ImportTest\Im
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StocksAPI", "StocksAPI\StocksAPI.csproj", "{B2070903-A823-4B0B-AFBF-EA946D5A9702}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StocksHTML", "StocksHTML\StocksHTML.csproj", "{C789C59F-F11D-4F2D-854A-A765C11461F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockHTML", "StockHTML\StockHTML.csproj", "{7A7FFD2B-1239-476E-A894-64C0F16441BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{B2070903-A823-4B0B-AFBF-EA946D5A9702}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2070903-A823-4B0B-AFBF-EA946D5A9702}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2070903-A823-4B0B-AFBF-EA946D5A9702}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C789C59F-F11D-4F2D-854A-A765C11461F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C789C59F-F11D-4F2D-854A-A765C11461F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C789C59F-F11D-4F2D-854A-A765C11461F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C789C59F-F11D-4F2D-854A-A765C11461F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A7FFD2B-1239-476E-A894-64C0F16441BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A7FFD2B-1239-476E-A894-64C0F16441BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A7FFD2B-1239-476E-A894-64C0F16441BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A7FFD2B-1239-476E-A894-64C0F16441BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
