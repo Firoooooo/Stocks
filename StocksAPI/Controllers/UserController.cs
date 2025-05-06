@@ -37,12 +37,12 @@ namespace StocksAPI.Controllers
         /// <summary>
         /// retrieves a specific user from the database
         /// </summary>
-        /// <param name="_uSERID">unique identifier for each user</param>
+        /// <param name="_uSERN">unique identifier for each user</param>
         /// <returns>Task</returns>
-        [HttpGet("{_uSERID}")]
-        public async Task<IActionResult> GetUser(int _uSERID)
+        [HttpGet("{_uSERN}")]
+        public async Task<IActionResult> GetUser(string _uSERN)
         {
-            var uSER = await sTOCKDontext.User.FindAsync(_uSERID);
+            var uSER = await sTOCKDontext.User.FirstOrDefaultAsync(E => E.Email == _uSERN);
             if (uSER == null)
                 return NotFound();
 
@@ -66,13 +66,13 @@ namespace StocksAPI.Controllers
         /// <summary>
         /// updates the user in the database
         /// </summary>
-        /// <param name="_uSERID">unique identifier for each user</param>
+        /// <param name="_uSERN">unique identifier for each user</param>
         /// <param name="_uSER">user which is getting inserted</param>
         /// <returns>Task</returns>
-        [HttpPut("{_uSERID}")]
-        public async Task<IActionResult> UpdateUser(int _uSERID, User _uSER)
+        [HttpPut("{_uSERN}")]
+        public async Task<IActionResult> UpdateUser(string _uSERN, User _uSER)
         {
-            if (_uSERID != _uSER.UserID)
+            if (_uSERN != _uSER.Email)
                 return BadRequest();
 
             sTOCKDontext.Entry(_uSER).State = EntityState.Modified;
@@ -84,12 +84,12 @@ namespace StocksAPI.Controllers
         /// <summary>
         /// deletes the user from the database
         /// </summary>
-        /// <param name="_uSERID">unique identifier for each user</param>
+        /// <param name="_uSERN">unique identifier for each user</param>
         /// <returns>Task</returns>
-        [HttpDelete("{_uSERID}")]
-        public async Task<IActionResult> DeleteUser(int _uSERID)
+        [HttpDelete("{_uSERN}")]
+        public async Task<IActionResult> DeleteUser(string _uSERN)
         {
-            var uSER = await sTOCKDontext.User.FindAsync(_uSERID);
+            var uSER = await sTOCKDontext.User.FirstOrDefaultAsync(U => U.Email == _uSERN);
             if (uSER == null)
                 return NotFound();
 

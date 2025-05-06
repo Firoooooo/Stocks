@@ -151,6 +151,24 @@ namespace Import.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LOGIN IST FEHLGESCHLAGEN.
+        /// </summary>
+        public static string LoginFailed {
+            get {
+                return ResourceManager.GetString("LoginFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LOGIN WAR ERFOLGREICH.
+        /// </summary>
+        public static string LoginSuccessful {
+            get {
+                return ResourceManager.GetString("LoginSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 3. low.
         /// </summary>
         public static string Low {
