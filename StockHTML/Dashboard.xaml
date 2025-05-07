@@ -1,6 +1,27 @@
 ﻿<Window x:Class="StockHTML.Dashboard"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="DashboardWindow" Height="450" Width="800">
-    <Frame Name="MainFrame"/>
+        Title="Dashboard"
+        Height="550"
+        Width="900"
+        ResizeMode="CanResize"
+        WindowStartupLocation="CenterScreen"
+        Background="#1e1e2f">
+
+    <Grid Margin="20">
+        <StackPanel VerticalAlignment="Top">
+            <DataGrid x:Name="DataGridView"
+                      AutoGenerateColumns="True"
+                      RowHeight="35"
+                      HeadersVisibility="Column"
+                      CanUserAddRows="False"
+                      AlternatingRowBackground="#2a2a40"
+                      Background="#252539"
+                      Foreground="White"
+                      BorderBrush="#3b82f6"
+                      GridLinesVisibility="None"
+                      FontSize="14"
+                      FontFamily="Segoe UI"/>
+        </StackPanel>
+    </Grid>
 </Window>

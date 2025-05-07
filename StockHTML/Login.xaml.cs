@@ -1,9 +1,8 @@
-﻿using StocksAPI.Models;
-using System.Net.Http;
-using System.Reflection.Emit;
+﻿using System.Net.Http;
 using System.Text.Json;
 using System.Windows;
 using Import.Resources;
+using StocksAPI.Models;
 
 namespace StockHTML
 {
@@ -57,7 +56,7 @@ namespace StockHTML
 
             if (uSER.Email == _eMAIL && uSER.Password == _pASS)
             {
-                Dashboard dASH = new Dashboard();
+                Dashboard dASH = new Dashboard(_eMAIL);
                 dASH.Show();
                 Close();
             }
