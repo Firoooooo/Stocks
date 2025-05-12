@@ -163,7 +163,7 @@ namespace Import
 
                         sQLCommand.Parameters.AddWithValue("@USERNAME", U.Value.Username);
                         sQLCommand.Parameters.AddWithValue("@EMAIL", U.Value.EMail);
-                        sQLCommand.Parameters.AddWithValue("@PASSWORD", U.Value.Passowrd);
+                        sQLCommand.Parameters.AddWithValue("@PASSWORD", U.Value.Password);
                         sQLCommand.Parameters.AddWithValue("@PASSWORDHASH", U.Value.PasswordHash);
                         sQLCommand.Parameters.AddWithValue("@BALANCE", U.Value.Balance);
 
