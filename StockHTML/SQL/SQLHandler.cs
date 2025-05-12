@@ -48,29 +48,27 @@ namespace StockHTML.SQL
                     {
                         while (sQLReader.Read())
                         {
-                            Console.WriteLine("USERID: " + sQLReader["USERID"]);
-                            Console.WriteLine("USERNAME: " + sQLReader["USERNAME"]);
-                            Console.WriteLine("EMAIL: " + sQLReader["EMAIL"]);
-                            Console.WriteLine("BALANCE: " + sQLReader["BALANCE"]);
-                            Console.WriteLine("TRANSACTIONID: " + sQLReader["TRANSACTIONID"]);
-                            Console.WriteLine("TRANSACTIONTYPE: " + sQLReader["TRANSACTIONTYPE"]);
-                            Console.WriteLine("TRANSACTION_QUANTITY: " + sQLReader["TRANSACTION_QUANTITY"]);
-                            Console.WriteLine("TRANSACTION_PRICE: " + sQLReader["TRANSACTION_PRICE"]);
-                            Console.WriteLine("TRANSACTIONDATE: " + sQLReader["TRANSACTIONDATE"]);
-                            Console.WriteLine("TRANSACTION_STOCK_SYMBOL: " + sQLReader["TRANSACTION_STOCK_SYMBOL"]);
-                            Console.WriteLine("TRANSACTION_STOCK_DATE: " + sQLReader["TRANSACTION_STOCK_DATE"]);
-                            Console.WriteLine("TRANSACTION_STOCK_CLOSE: " + sQLReader["TRANSACTION_STOCK_CLOSE"]);
-                            Console.WriteLine("PORTFOLIOID: " + sQLReader["PORTFOLIOID"]);
-                            Console.WriteLine("PORTFOLIO_QUANTITY: " + sQLReader["PORTFOLIO_QUANTITY"]);
-                            Console.WriteLine("PORTFOLIO_STOCK_SYMBOL: " + sQLReader["PORTFOLIO_STOCK_SYMBOL"]);
-                            Console.WriteLine("PORTFOLIO_STOCK_CLOSE: " + sQLReader["PORTFOLIO_STOCK_CLOSE"]);
-                            Console.WriteLine("HISTORYID: " + sQLReader["HISTORYID"]);
-                            Console.WriteLine("TOTALVALUE: " + sQLReader["TOTALVALUE"]);
-                            Console.WriteLine("VALUE_DATE: " + sQLReader["VALUE_DATE"]);
+                            Console.WriteLine("USERID : " + sQLReader["USERID"]);
+                            Console.WriteLine("USERNAME : " + sQLReader["USERNAME"]);
+                            Console.WriteLine("EMAIL : " + sQLReader["EMAIL"]);
+                            Console.WriteLine("BALANCE : " + sQLReader["BALANCE"]);
+                            Console.WriteLine("TRANSACTIONID : " + sQLReader["TRANSACTIONID"]);
+                            Console.WriteLine("TRANSACTIONTYPE : " + sQLReader["TRANSACTIONTYPE"]);
+                            Console.WriteLine("TRANSACTION_QUANTITY : " + sQLReader["TRANSACTION_QUANTITY"]);
+                            Console.WriteLine("TRANSACTION_PRICE : " + sQLReader["TRANSACTION_PRICE"]);
+                            Console.WriteLine("TRANSACTIONDATE : " + sQLReader["TRANSACTIONDATE"]);
+                            Console.WriteLine("TRANSACTION_STOCK_SYMBOL : " + sQLReader["TRANSACTION_STOCK_SYMBOL"]);
+                            Console.WriteLine("TRANSACTION_STOCK_DATE : " + sQLReader["TRANSACTION_STOCK_DATE"]);
+                            Console.WriteLine("TRANSACTION_STOCK_CLOSE : " + sQLReader["TRANSACTION_STOCK_CLOSE"]);
+                            Console.WriteLine("PORTFOLIOID : " + sQLReader["PORTFOLIOID"]);
+                            Console.WriteLine("PORTFOLIO_QUANTITY : " + sQLReader["PORTFOLIO_QUANTITY"]);
+                            Console.WriteLine("PORTFOLIO_STOCK_SYMBOL : " + sQLReader["PORTFOLIO_STOCK_SYMBOL"]);
+                            Console.WriteLine("PORTFOLIO_STOCK_CLOSE : " + sQLReader["PORTFOLIO_STOCK_CLOSE"]);
+                            Console.WriteLine("HISTORYID : " + sQLReader["HISTORYID"]);
+                            Console.WriteLine("TOTALVALUE : " + sQLReader["TOTALVALUE"]);
+                            Console.WriteLine("VALUE_DATE : " + sQLReader["VALUE_DATE"]);
                         }
                     }
-                    
-
                 }
                 catch (Exception EX)
                 {
