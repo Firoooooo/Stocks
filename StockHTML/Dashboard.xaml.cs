@@ -1,25 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Import;
-using Import.Singleton;
-using MySql.Data.MySqlClient;
+﻿using Import.Singleton;
 using Newtonsoft.Json;
 using StockHTML.SQL;
+using System.Data;
+using System.IO;
+using System.Reflection;
+using System.Windows;
 
 namespace StockHTML
 {
@@ -30,6 +15,7 @@ namespace StockHTML
     {
         public string EMail { get; set; }
         public Connections Connections { get; set; }
+        public DataTable DataTable { get; set; }
 
 
         /// <summary>
@@ -41,20 +27,6 @@ namespace StockHTML
             InitializeComponent();
             EMail = _eMAIL;
             InitializeUserWindow();
-
-            Connections cON = Connections.xInstance;
-
-            using (Stream rESXFile = Assembly.Load("Import").GetManifestResourceStream("Import.Configs.Config.json"))
-            {
-                using (StreamReader rESXReader = new StreamReader(rESXFile))
-                {
-                    string rESXContent = rESXReader.ReadToEnd();
-
-                    JsonConvert.PopulateObject(rESXContent, cON);
-                }
-            }
-
-            Connections = cON;
         }
 
         /// <summary>
@@ -62,33 +34,17 @@ namespace StockHTML
         /// </summary>
         public void InitializeUserWindow()
         {
-            SQLHandler sQLHandler = new SQLHandler(Connections, EMail);
+            Connections = Connections.xInstance;
 
-
-            SQLInitializer sQLInitializer = new SQLInitializer();
-            MySqlConnection sQLConnection = new MySqlConnection(Connections.CONNECTIONSTRING);
-            sQLConnection.Open();
-            string sQLQuery = $"SELECT * FROM User WHERE Email = '{EMail}'";
-
-            using (MySqlTransaction sQLTransaction = sQLConnection.BeginTransaction())
-            using (MySqlCommand sQLCommand = new MySqlCommand(sQLQuery, sQLConnection))
+            using (Stream rESXStream = Assembly.Load("Import").GetManifestResourceStream("Import.Configs.Config.json"))
+            using (StreamReader rESXStreamReader = new StreamReader(rESXStream))
             {
-                try
-                {
-
-
-                    // ExecuteNonQuery gibt nicht das Ergebnis wieder - baue das also um 
-                    sQLCommand.ExecuteNonQuery();
-                    sQLTransaction.Commit();
-                }
-                catch (Exception EX)
-                {
-                    sQLTransaction.Rollback();
-                    Console.WriteLine($"Error: {EX.Message}");
-                }
+                string rESXCOntent = rESXStreamReader.ReadToEnd();
+                JsonConvert.PopulateObject(rESXCOntent, Connections);
             }
-            
+
+            SQLHandler sQLHandler = new SQLHandler(Connections, EMail);
+            DataTable = sQLHandler.RetrieveUsersAsDataTable();
         }
     }
-
 }
