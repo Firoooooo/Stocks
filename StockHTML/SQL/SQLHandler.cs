@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Import;
+﻿using Import;
 using Import.Singleton;
 using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace StockHTML.SQL
 {
