@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,47 +29,27 @@ namespace StockHTML.SQL
             EMail = _eMAIL;
         }
 
-        public void QueryDataFromDB()
+        /// <summary>
+        /// executes a query and returns the result as a datatable
+        /// </summary>
+        /// <returns>DataTable</returns>
+        public DataTable RetrieveUsersAsDataTable()
         {
             SQLInitializer.ExecuteQuery($"USE {Connections.xInstance.DATABASENAME};"
                 , SQLConnection);
+            DataTable dATA = new DataTable();
 
-
-            string sQLQuery = $@"SELECT U.USERID, U.USERNAME, U.EMAIL, U.BALANCE, T.TRANSACTIONID, T.TRANSACTIONTYPE, T.QUANTITY AS TRANSACTION_QUANTITY, T.PRICE AS TRANSACTION_PRICE, T.TRANSACTIONDATE, TS.SYMBOL AS TRANSACTION_STOCK_SYMBOL, TS.DATE AS TRANSACTION_STOCK_DATE, TS.CLOSE AS TRANSACTION_STOCK_CLOSE, P.PORTFOLIOID, P.QUANTITY AS PORTFOLIO_QUANTITY, PS.SYMBOL AS PORTFOLIO_STOCK_SYMBOL, PS.CLOSE AS PORTFOLIO_STOCK_CLOSE, PVH.HISTORYID, PVH.TOTALVALUE, PVH.DATE AS VALUE_DATE FROM USER U LEFT JOIN TRANSACTION T ON U.USERID = T.USERID LEFT JOIN STOCK TS ON T.STOCKID = TS.STOCKID LEFT JOIN USERPORTFOLIO P ON U.USERID = P.USERID LEFT JOIN STOCK PS ON P.STOCKID = PS.STOCKID LEFT JOIN PORTFOLIOVALUEHISTORY PVH ON U.USERID = PVH.USERID WHERE U.EMAIL = @EMAIL;";
+            string sQLQuery = $@"SELECT U.USERID, U.USERNAME, U.EMAIL, U.BALANCE, T.TRANSACTIONID, T.TRANSACTIONTYPE, T.QUANTITY AS TRANSACTION_QUANTITY, T.PRICE AS TRANSACTION_PRICE, T.TRANSACTIONDATE, TS.SYMBOL AS TRANSACTION_STOCK_SYMBOL, TS.DATE AS TRANSACTION_STOCK_DATE, TS.CLOSE AS TRANSACTION_STOCK_CLOSE, P.PORTFOLIOID, P.QUANTITY AS PORTFOLIO_QUANTITY, PS.SYMBOL AS PORTFOLIO_STOCK_SYMBOL, PS.CLOSE AS PORTFOLIO_STOCK_CLOSE, PVH.HISTORYID, PVH.TOTALVALUE, PVH.DATE AS VALUE_DATE FROM USER U LEFT JOIN TRANSACTION T ON U.USERID = T.USERID LEFT JOIN STOCK TS ON T.STOCKID = TS.STOCKID LEFT JOIN USERPORTFOLIO P ON U.USERID = P.USERID LEFT JOIN STOCK PS ON P.STOCKID = PS.STOCKID LEFT JOIN PORTFOLIOVALUEHISTORY PVH ON U.USERID = PVH.USERID WHERE U.EMAIL = '{EMail}';";
 
             using (MySqlTransaction sQLTransaction = SQLConnection.BeginTransaction())
             using (MySqlCommand sQLCommand = new MySqlCommand(sQLQuery, SQLConnection, sQLTransaction))
             {
                 try
                 {
-                    sQLCommand.Parameters.Clear();
-                    sQLCommand.Parameters.AddWithValue("@EMAIL", EMail);
+                    MySqlDataAdapter sQLAdapter = new MySqlDataAdapter(sQLQuery, SQLConnection);
+                    sQLAdapter.Fill(dATA);
 
-                    using (MySqlDataReader sQLReader = sQLCommand.ExecuteReader())
-                    {
-                        while (sQLReader.Read())
-                        {
-                            Console.WriteLine("USERID : " + sQLReader["USERID"]);
-                            Console.WriteLine("USERNAME : " + sQLReader["USERNAME"]);
-                            Console.WriteLine("EMAIL : " + sQLReader["EMAIL"]);
-                            Console.WriteLine("BALANCE : " + sQLReader["BALANCE"]);
-                            Console.WriteLine("TRANSACTIONID : " + sQLReader["TRANSACTIONID"]);
-                            Console.WriteLine("TRANSACTIONTYPE : " + sQLReader["TRANSACTIONTYPE"]);
-                            Console.WriteLine("TRANSACTION_QUANTITY : " + sQLReader["TRANSACTION_QUANTITY"]);
-                            Console.WriteLine("TRANSACTION_PRICE : " + sQLReader["TRANSACTION_PRICE"]);
-                            Console.WriteLine("TRANSACTIONDATE : " + sQLReader["TRANSACTIONDATE"]);
-                            Console.WriteLine("TRANSACTION_STOCK_SYMBOL : " + sQLReader["TRANSACTION_STOCK_SYMBOL"]);
-                            Console.WriteLine("TRANSACTION_STOCK_DATE : " + sQLReader["TRANSACTION_STOCK_DATE"]);
-                            Console.WriteLine("TRANSACTION_STOCK_CLOSE : " + sQLReader["TRANSACTION_STOCK_CLOSE"]);
-                            Console.WriteLine("PORTFOLIOID : " + sQLReader["PORTFOLIOID"]);
-                            Console.WriteLine("PORTFOLIO_QUANTITY : " + sQLReader["PORTFOLIO_QUANTITY"]);
-                            Console.WriteLine("PORTFOLIO_STOCK_SYMBOL : " + sQLReader["PORTFOLIO_STOCK_SYMBOL"]);
-                            Console.WriteLine("PORTFOLIO_STOCK_CLOSE : " + sQLReader["PORTFOLIO_STOCK_CLOSE"]);
-                            Console.WriteLine("HISTORYID : " + sQLReader["HISTORYID"]);
-                            Console.WriteLine("TOTALVALUE : " + sQLReader["TOTALVALUE"]);
-                            Console.WriteLine("VALUE_DATE : " + sQLReader["VALUE_DATE"]);
-                        }
-                    }
+                    return dATA;
                 }
                 catch (Exception EX)
                 {
@@ -76,6 +57,8 @@ namespace StockHTML.SQL
                     Console.WriteLine($"{Import.Resources.Labels.DataImportFailed} {EX.Message}");
                 }
             }
+
+            return dATA;
         }
     }
 }

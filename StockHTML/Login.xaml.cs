@@ -1,8 +1,8 @@
-﻿using System.Net.Http;
-using System.Text.Json;
-using System.Windows;
-using Import.Resources;
+﻿using Import.Resources;
+using Newtonsoft.Json;
 using StocksAPI.Models;
+using System.Net.Http;
+using System.Windows;
 
 namespace StockHTML
 {
@@ -38,7 +38,7 @@ namespace StockHTML
                 throw new Exception($"{Labels.LoginFailed}: {eMAIL}");
 
             string _jSON = await rESP.Content.ReadAsStringAsync();
-            CheckCredentials(_jSON, eMAIL, pASS);
+            Check(_jSON, eMAIL, pASS);
         }
 
         /// <summary>
@@ -47,18 +47,16 @@ namespace StockHTML
         /// <param name="_jSON">json data</param>
         /// <param name="_eMAIL">email</param>
         /// <param name="_pASS">poassword</param>
-        public void CheckCredentials(string _jSON, string _eMAIL, string _pASS)
+        public void Check(string _jSON, string _eMAIL, string _pASS)
         {
-            User uSER = JsonSerializer.Deserialize<User>(_jSON, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            User uSER = JsonConvert.DeserializeObject<User>(_jSON);
 
             if (uSER.Email == _eMAIL && uSER.Password == _pASS)
             {
                 Dashboard dASH = new Dashboard(_eMAIL);
-                dASH.Show();
                 Close();
+                dASH.Show();
+                dASH.DataGridView.ItemsSource = dASH.DataTable.DefaultView;
             }
         }
     }
