@@ -171,4 +171,7 @@
   <data name="Volume" xml:space="preserve">
     <value>5. volume</value>
   </data>
+  <data name="WrongMail" xml:space="preserve">
+    <value>Die Anmeldung ist fehlgeschlagen. Die Kombination aus E-Mail-Adresse und Passwort konnte nicht verifiziert werden</value>
+  </data>
 </root>
