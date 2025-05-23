@@ -35,7 +35,7 @@ namespace StockHTML
             HttpResponseMessage rESP = cLIENT.GetAsync(aPIURL).Result;
 
             if (!rESP.IsSuccessStatusCode)
-                throw new Exception($"{Labels.LoginFailed}: {eMAIL}");
+                MessageBox.Show(Import.Resources.Labels.WrongMail);
 
             string _jSON = await rESP.Content.ReadAsStringAsync();
             Check(_jSON, eMAIL, pASS);
